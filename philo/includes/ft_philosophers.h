@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:36:55 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/23 13:58:16 by okraus           ###   ########.fr       */
+/*   Updated: 2023/07/23 15:23:10 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,14 +111,17 @@ void	*ft_philo(void *data);
 void	write_status(t_philo *philo, bool reaper_report, t_status status);
 void	write_outcome(t_table *table);
 
+//	ft_reaper.c
+void	*ft_reaper(void *data);
+int		ft_stop(t_table *table);
+
 //	ft_time.c
 time_t	get_time_in_ms(void);
+void	sim_start_delay(time_t start_time);
 
 //	ft_utils.c
 int		ft_atoi(char *str);
 int		ft_check_input(int argc, char *argv[]);
-
-
 
 /*
 

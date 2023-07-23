@@ -6,7 +6,7 @@
 #    By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/22 15:33:07 by okraus            #+#    #+#              #
-#    Updated: 2023/07/23 13:56:50 by okraus           ###   ########.fr        #
+#    Updated: 2023/07/23 15:13:12 by okraus           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRC		=	ft_philosophers.c \
 			ft_init.c \
 			ft_philo.c \
 			ft_print.c \
+			ft_reaper.c \
 			ft_time.c \
 			ft_utils.c
 #			parsing.c \

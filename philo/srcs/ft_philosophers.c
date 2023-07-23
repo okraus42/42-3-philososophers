@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:35:45 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/23 13:57:49 by okraus           ###   ########.fr       */
+/*   Updated: 2023/07/23 15:08:18 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ static bool	start_simulation(t_table *table)
 			return (1); //message
 		i++;
 	}
-	/*if (table->nb_philos > 1)
+	if (table->nb_philos > 1)
 	{
 		if (pthread_create(&table->grim_reaper, NULL,
-				&grim_reaper, table) != 0)
-			return (error_failure(STR_ERR_THREAD, NULL, table));
-	}*/
+				&ft_reaper, table) != 0)
+			return (1); //message
+	}
 	return (0);
 }
 

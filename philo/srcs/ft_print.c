@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:54:46 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/23 14:21:39 by okraus           ###   ########.fr       */
+/*   Updated: 2023/07/23 15:12:53 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	write_status(t_philo *philo, bool reaper_report, t_status status)
 {
 	pthread_mutex_lock(&philo->table->write_lock);
 	(void)reaper_report;
-	if (0/*has_simulation_stopped(philo->table) == true && reaper_report == false*/)
+	if (ft_stop(philo->table) == true && reaper_report == false)
 	{
 		pthread_mutex_unlock(&philo->table->write_lock);
 		return ;

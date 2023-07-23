@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:44:59 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/23 14:02:22 by okraus           ###   ########.fr       */
+/*   Updated: 2023/07/23 15:46:26 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,10 @@ static void	philo_sleep(t_table *table, time_t sleep_time)
 	while (get_time_in_ms() < wake_up)
 	{
 		(void)table;
-		//if (has_simulation_stopped(table))
-		//	break ;
+		if (ft_stop(table))
+			break ;
 		usleep(100);
 	}
-}
-
-/* sim_start_delay:
-*	Waits for a small delay at the beginning of each threads execution
-*	so that all threads start at the same time with the same start time
-*	reference. This ensures the grim reaper thread is synchronized with
-*	the philosopher threads.
-*/
-static void	sim_start_delay(time_t start_time)
-{
-	while (get_time_in_ms() < start_time)
-		continue ;
 }
 
 /* eat_sleep_routine:
@@ -60,7 +48,7 @@ static void	eat_sleep_routine(t_philo *philo)
 	philo->last_meal = get_time_in_ms();
 	pthread_mutex_unlock(&philo->meal_time_lock);
 	philo_sleep(philo->table, philo->table->time_to_eat);
-	if (/*has_simulation_stopped(philo->table) == false*/1)
+	if (!ft_stop(philo->table))
 	{
 		pthread_mutex_lock(&philo->meal_time_lock);
 		philo->times_ate += 1;
@@ -86,15 +74,31 @@ static void	think_routine(t_philo *philo)
 	time_t	time_to_think;
 
 	pthread_mutex_lock(&philo->meal_time_lock);
-	time_to_think = (philo->table->time_to_die
-			- (get_time_in_ms() - philo->last_meal)
-			- philo->table->time_to_eat) / 2;
+	time_to_think = (philo->table->time_to_eat
+			- philo->table->time_to_sleep);
 	pthread_mutex_unlock(&philo->meal_time_lock);
 	if (time_to_think < 0)
 		time_to_think = 0;
 	if (time_to_think > 600)
 		time_to_think = 200;
 	write_status(philo, false, THINKING);
+	philo_sleep(philo->table, time_to_think);
+}
+
+static void	think_routine_odd(t_philo *philo)
+{
+	time_t	time_to_think;
+
+	pthread_mutex_lock(&philo->meal_time_lock);
+	time_to_think = (philo->table->time_to_eat * 2
+			- philo->table->time_to_sleep);
+	pthread_mutex_unlock(&philo->meal_time_lock);
+	if (time_to_think < 0)
+		time_to_think = 0;
+	/*if (time_to_think > 60000)
+		time_to_think = 10000;*/
+	write_status(philo, false, THINKING);
+	//write(1, "odd_is_thinking\n", 16);
 	philo_sleep(philo->table, time_to_think);
 }
 
@@ -130,13 +134,23 @@ void	*ft_philo(void *data)
 		return (NULL);
 	if (philo->table->nb_philos == 1)
 		return (lone_philo_routine(philo));
-	else if (philo->id % 2)
-		think_routine(philo);
-	//while (has_simulation_stopped(philo->table) == false)
-	while (1)
+	/*else if (philo->id % 2)
+		think_routine(philo);*/
+	else if (philo->table->nb_philos % 2)
 	{
-		eat_sleep_routine(philo);
-		think_routine(philo);
+		while (!ft_stop(philo->table))
+		{
+			eat_sleep_routine(philo);
+			think_routine_odd(philo);
+		}
+	}
+	else
+	{
+		while (!ft_stop(philo->table))
+		{
+			eat_sleep_routine(philo);
+			think_routine(philo);
+		}	
 	}
 	return (NULL);
 }
