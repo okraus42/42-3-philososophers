@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:36:55 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/23 13:04:44 by okraus           ###   ########.fr       */
+/*   Updated: 2023/07/23 13:58:16 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,15 +97,28 @@ typedef enum e_status
 |                            Function Prototypes                              |
 \*****************************************************************************/
 
+//ft_free.c
+void	ft_free_table(t_table *table);
+void	destroy_mutexes(t_table *table);
+
 //	ft_init.c
 t_table	*ft_inittable(char *argv[]);
+
+//	ft_philo.c
+void	*ft_philo(void *data);
+
+//	ft_print.c
+void	write_status(t_philo *philo, bool reaper_report, t_status status);
+void	write_outcome(t_table *table);
+
+//	ft_time.c
+time_t	get_time_in_ms(void);
 
 //	ft_utils.c
 int		ft_atoi(char *str);
 int		ft_check_input(int argc, char *argv[]);
 
-//ft_free.c
-void	ft_free_table(t_table *table);
+
 
 /*
 

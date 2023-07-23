@@ -6,7 +6,7 @@
 #    By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/22 15:33:07 by okraus            #+#    #+#              #
-#    Updated: 2023/07/23 13:04:13 by okraus           ###   ########.fr        #
+#    Updated: 2023/07/23 13:56:50 by okraus           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,11 @@ OBJ_PATH = objs/
 
 SRC		=	ft_philosophers.c \
 			ft_free.c \
-			ft_utils.c \
-			ft_init.c
+			ft_init.c \
+			ft_philo.c \
+			ft_print.c \
+			ft_time.c \
+			ft_utils.c
 #			parsing.c \
 #			grim_reaper.c \
 #			time.c \
