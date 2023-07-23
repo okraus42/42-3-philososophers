@@ -1,27 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.c                                     :+:      :+:    :+:   */
+/*   ft_philosophers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:35:45 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/22 17:50:40 by okraus           ###   ########.fr       */
+/*   Updated: 2023/07/23 13:03:17 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
-
-int	ft_check_input(int argc, char *argv[])
-{
-	if (argc < 5 || argc > 6)
-	{
-		write(2, STR_USAGE, 135);
-		return (1);
-	}
-	(void)argv;
-	return (0);
-}
+#include "../includes/ft_philosophers.h"
 
 void	ft_colourtest(void)
 {
@@ -52,9 +41,11 @@ int	main(int argc, char *argv[])
 
 	if (ft_check_input(argc, argv))
 		return (1);
-	(void)argv;
-	table = NULL;
-	(void)table;
+	table = ft_inittable(argv);
+	if (!table)
+		return (1);
 	ft_colourtest();
+	ft_free_table(table);
+	table = NULL;
 	return (0);
 }

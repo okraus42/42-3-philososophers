@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   ft_philosophers.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:36:55 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/22 16:54:44 by okraus           ###   ########.fr       */
+/*   Updated: 2023/07/23 13:04:44 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS_H
-# define PHILOSOPHERS_H
+#ifndef FT_PHILOSOPHERS_H
+# define FT_PHILOSOPHERS_H
 
 # include <pthread.h>
 # include <limits.h>
@@ -59,7 +59,7 @@ typedef struct s_philo	t_philo;
 typedef struct s_table
 {
 	time_t			start_time;
-	unsigned int	nb_philos;
+	int				nb_philos;
 	pthread_t		grim_reaper;
 	time_t			time_to_die;
 	time_t			time_to_eat;
@@ -96,6 +96,16 @@ typedef enum e_status
 /*****************************************************************************\
 |                            Function Prototypes                              |
 \*****************************************************************************/
+
+//	ft_init.c
+t_table	*ft_inittable(char *argv[]);
+
+//	ft_utils.c
+int		ft_atoi(char *str);
+int		ft_check_input(int argc, char *argv[]);
+
+//ft_free.c
+void	ft_free_table(t_table *table);
 
 /*
 

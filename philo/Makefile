@@ -6,7 +6,7 @@
 #    By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/22 15:33:07 by okraus            #+#    #+#              #
-#    Updated: 2023/07/22 15:50:37 by okraus           ###   ########.fr        #
+#    Updated: 2023/07/23 13:04:13 by okraus           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,10 @@ endif
 SRC_PATH = srcs/
 OBJ_PATH = objs/
 
-SRC		=	philosophers.c
+SRC		=	ft_philosophers.c \
+			ft_free.c \
+			ft_utils.c \
+			ft_init.c
 #			parsing.c \
 #			grim_reaper.c \
 #			time.c \
