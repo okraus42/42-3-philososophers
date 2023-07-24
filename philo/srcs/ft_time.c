@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:38:37 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/23 15:17:19 by okraus           ###   ########.fr       */
+/*   Updated: 2023/07/24 18:58:19 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,8 @@ time_t	get_time_in_ms(void)
 void	sim_start_delay(time_t start_time)
 {
 	while (get_time_in_ms() < start_time)
+	{
+		usleep(10);
 		continue ;
+	}
 }

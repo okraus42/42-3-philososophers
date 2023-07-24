@@ -6,13 +6,13 @@
 #    By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/22 15:33:07 by okraus            #+#    #+#              #
-#    Updated: 2023/07/23 15:13:12 by okraus           ###   ########.fr        #
+#    Updated: 2023/07/24 19:41:29 by okraus           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= philo
-CC		= gcc
-CFLAGS	= -Werror -Wall -Wextra -pthread
+CC		= cc
+CFLAGS	= -Werror -Wall -Wextra -pthread -g
 
 # Run 'make re MODE=pretty' for color formatting.
 # Run 'make re MODE=debug' for debug formatting.
@@ -21,7 +21,7 @@ ifeq ($(MODE), pretty)
 	CFLAGS	+= -D DEBUG_FORMATTING=1
 endif
 ifeq ($(MODE), debug)
-	CFLAGS	+= -D DEBUG_FORMATTING=1 -fsanitize=thread -g
+	CFLAGS	+= -D DEBUG_FORMATTING=1 -fsanitize=thread
 endif
 
 SRC_PATH = srcs/

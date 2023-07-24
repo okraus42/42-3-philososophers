@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:00:14 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/23 13:08:47 by okraus           ###   ########.fr       */
+/*   Updated: 2023/07/24 19:11:21 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,5 @@ void	destroy_mutexes(t_table *table)
 	}
 	pthread_mutex_destroy(&table->write_lock);
 	pthread_mutex_destroy(&table->sim_stop_lock);
+	pthread_mutex_destroy(&table->extra_lock);
 }

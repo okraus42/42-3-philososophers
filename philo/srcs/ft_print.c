@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:54:46 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/23 15:12:53 by okraus           ###   ########.fr       */
+/*   Updated: 2023/07/24 15:54:33 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,10 @@ static void	write_status_debug(t_philo *philo, t_status status)
 */
 static void	print_status(t_philo *philo, char *str)
 {
-	int	i;
-
-	i = philo->id;
 	// printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
 	// 	philo->id + 1, str);
-	printf("\e[30;48:2:%i:%i:%im%6ld  %3d %-30s\e[0m\n", ((i / 4) + 12 * i) % 64 + 192, (32 + (i / 4) + 34 * i) % 64 + 192, ((i / 4) + i * 16) % 64 + 192, get_time_in_ms() - philo->table->start_time,
+	printf("\e[30;48:2:%i:%i:%im%6ld  %3d %-30s\e[0m\n", philo->red, philo->green,
+		philo->blue, get_time_in_ms() - philo->table->start_time,
 		philo->id + 1, str);
 }
 
@@ -115,7 +113,7 @@ void	write_status(t_philo *philo, bool reaper_report, t_status status)
 */
 void	write_outcome(t_table *table)
 {
-	int	i;
+	int				i;
 	unsigned int	full_count;
 
 	full_count = 0;

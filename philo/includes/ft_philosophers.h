@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:36:55 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/23 15:23:10 by okraus           ###   ########.fr       */
+/*   Updated: 2023/07/24 19:10:15 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_table
 	bool			sim_stop;
 	pthread_mutex_t	sim_stop_lock;
 	pthread_mutex_t	write_lock;
+	pthread_mutex_t	extra_lock;
 	pthread_mutex_t	*fork_locks;
 	t_philo			**philos;
 }	t_table;
@@ -78,6 +79,9 @@ typedef struct s_philo
 	unsigned int		id;
 	unsigned int		times_ate;
 	unsigned int		fork[2];
+	int					red;
+	int					green;
+	int					blue;
 	pthread_mutex_t		meal_time_lock;
 	time_t				last_meal;
 	t_table				*table;

@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 12:46:45 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/23 13:05:32 by okraus           ###   ########.fr       */
+/*   Updated: 2023/07/24 19:14:48 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,11 @@ static t_philo	**ft_init_philosophers(t_table *table)
 			return (NULL); //message
 		philos[i]->table = table;
 		philos[i]->id = i;
+		philos[i]->red = ((i / 4) + 12 * i) % 64 + 192;
+		philos[i]->green = (32 + (i / 4) + 34 * i) % 64 + 192;
+		philos[i]->blue = ((i / 4) + i * 16) % 64 + 192;
 		philos[i]->times_ate = 0;
+		//philos[i]->last_meal = 0;
 		ft_assign_forks(philos[i]);
 		i++;
 	}
@@ -76,6 +80,8 @@ static int	ft_init_global_mutexes(t_table *table)
 	if (pthread_mutex_init(&table->sim_stop_lock, 0) != 0)
 		return (1); //message
 	if (pthread_mutex_init(&table->write_lock, 0) != 0)
+		return (1); //messsage
+	if (pthread_mutex_init(&table->extra_lock, 0) != 0)
 		return (1); //messsage
 	return (0);
 }

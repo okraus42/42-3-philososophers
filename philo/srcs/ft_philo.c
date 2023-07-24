@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:44:59 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/23 15:46:26 by okraus           ###   ########.fr       */
+/*   Updated: 2023/07/24 19:12:14 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ static void	think_routine(t_philo *philo)
 	pthread_mutex_unlock(&philo->meal_time_lock);
 	if (time_to_think < 0)
 		time_to_think = 0;
-	if (time_to_think > 600)
-		time_to_think = 200;
+	/*if (time_to_think > 600)
+		time_to_think = 200;*/
 	write_status(philo, false, THINKING);
 	philo_sleep(philo->table, time_to_think);
 }
@@ -126,20 +126,21 @@ void	*ft_philo(void *data)
 	philo = (t_philo *)data;
 	if (philo->table->must_eat_count == 0)
 		return (NULL);
-	pthread_mutex_lock(&philo->meal_time_lock);
+	pthread_mutex_lock(&philo->table->extra_lock);
 	philo->last_meal = philo->table->start_time;
-	pthread_mutex_unlock(&philo->meal_time_lock);
+	pthread_mutex_unlock(&philo->table->extra_lock);
 	sim_start_delay(philo->table->start_time);
 	if (philo->table->time_to_die == 0)
 		return (NULL);
+	if (philo->id % 2 && philo->table->nb_philos > 1)
+		usleep(50);
 	if (philo->table->nb_philos == 1)
 		return (lone_philo_routine(philo));
-	/*else if (philo->id % 2)
-		think_routine(philo);*/
 	else if (philo->table->nb_philos % 2)
 	{
 		while (!ft_stop(philo->table))
 		{
+			//printf("philo %i\n", philo->id + 1);
 			eat_sleep_routine(philo);
 			think_routine_odd(philo);
 		}
@@ -148,6 +149,7 @@ void	*ft_philo(void *data)
 	{
 		while (!ft_stop(philo->table))
 		{
+			//printf("philo %i\n", philo->id + 1);
 			eat_sleep_routine(philo);
 			think_routine(philo);
 		}	

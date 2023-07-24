@@ -4,6 +4,10 @@
 # Hidden stuff
 .*
 
+# tester
+tester*
+tester/*
+
 # Test stuff
 input
 output
