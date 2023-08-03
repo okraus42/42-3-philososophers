@@ -6,12 +6,11 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:44:59 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/03 12:38:00 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/03 13:00:02 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers.h"
-
 
 static void	ft_philo_sleep(t_table *table, time_t sleep_time)
 {
