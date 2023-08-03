@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 12:46:45 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/24 19:14:48 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/03 12:30:19 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static pthread_mutex_t	*ft_init_forks(t_table *table)
 	return (forks);
 }
 
-//update every round?
 static void	ft_assign_forks(t_philo *philo)
 {
 	philo->fork[0] = philo->id;
@@ -64,7 +63,7 @@ static t_philo	**ft_init_philosophers(t_table *table)
 		philos[i]->green = (32 + (i / 4) + 34 * i) % 64 + 192;
 		philos[i]->blue = ((i / 4) + i * 16) % 64 + 192;
 		philos[i]->times_ate = 0;
-		//philos[i]->last_meal = 0;
+		philos[i]->last_meal = 0;
 		ft_assign_forks(philos[i]);
 		i++;
 	}

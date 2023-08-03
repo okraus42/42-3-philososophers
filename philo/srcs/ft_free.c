@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:00:14 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/24 19:11:21 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/03 09:29:13 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_free_table(t_table *table)
 	free(table);
 }
 
-void	destroy_mutexes(t_table *table)
+void	ft_destroy_mutexes(t_table *table)
 {
 	int	i;
 

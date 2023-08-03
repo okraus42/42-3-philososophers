@@ -6,31 +6,19 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 15:02:16 by okraus            #+#    #+#             */
-/*   Updated: 2023/07/24 19:18:25 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/03 12:31:21 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers.h"
 
-/* set_sim_stop_flag:
-*	Sets the simulation stop flag to true or false. Only the grim
-*	reaper thread can set this flag. If the simulation stop flag is
-*	set to true, that means the simulation has met an end condition.
-*/
-static void	set_sim_stop_flag(t_table *table, bool state)
+static void	ft_set_sim_stop_flag(t_table *table, bool state)
 {
 	pthread_mutex_lock(&table->sim_stop_lock);
 		table->sim_stop = state;
 	pthread_mutex_unlock(&table->sim_stop_lock);
 }
 
-/* has_simulation_stopped:
-*	Checks whether the simulation is at an end. The stop flag
-*	is protected by a mutex lock to allow any thread to check
-*	the simulation status without conflict.
-*	Returns true if the simulation stop flag is set to true,
-*	false if the flag is set to false. 
-*/
 int	ft_stop(t_table *table)
 {
 	int	r;
@@ -43,35 +31,22 @@ int	ft_stop(t_table *table)
 	return (r);
 }
 
-/* kill_philo:
-*	Checks if the philosopher must be killed by comparing the
-*	time since the philosopher's last meal and the time_to_die parameter.
-*	If it is time for the philosopher to die, sets the simulation stop
-*	flag and displays the death status.
-*	Returns true if the philosopher has been killed, false if not.
-*/
-static bool	kill_philo(t_philo *philo)
+static bool	ft_kill_philo(t_philo *philo)
 {
 	time_t	time;
 
-	time = get_time_in_ms();
+	time = ft_get_time_in_ms();
 	if ((time - philo->last_meal) >= philo->table->time_to_die)
 	{
-		set_sim_stop_flag(philo->table, true);
-		write_status(philo, true, DIED);
+		ft_set_sim_stop_flag(philo->table, true);
+		ft_write_status(philo, true, DIED);
 		pthread_mutex_unlock(&philo->meal_time_lock);
 		return (true);
 	}
 	return (false);
 }
 
-/* end_condition_reached:
-*	Checks each philosopher to see if one of two end conditions
-*	has been reached. Stops the simulation if a philosopher needs
-*	to be killed, or if every philosopher has eaten enough.
-*	Returns true if an end condition has been reached, false if not.
-*/
-static bool	end_condition_reached(t_table *table)
+static bool	ft_end_condition_reached(t_table *table)
 {
 	int		i;
 	bool	all_ate_enough;
@@ -81,7 +56,7 @@ static bool	end_condition_reached(t_table *table)
 	while (i < table->nb_philos)
 	{
 		pthread_mutex_lock(&table->philos[i]->meal_time_lock);
-		if (kill_philo(table->philos[i]))
+		if (ft_kill_philo(table->philos[i]))
 			return (true);
 		if (table->must_eat_count != -1)
 			if (table->philos[i]->times_ate
@@ -92,17 +67,32 @@ static bool	end_condition_reached(t_table *table)
 	}
 	if (table->must_eat_count != -1 && all_ate_enough == true)
 	{
-		set_sim_stop_flag(table, true);
+		ft_set_sim_stop_flag(table, true);
 		return (true);
 	}
 	return (false);
 }
 
-/* grim_reaper:
-*	The grim reaper thread's routine. Checks if a philosopher must
-*	be killed and if all philosophers ate enough. If one of those two
-*	end conditions are reached, it stops the simulation.
-*/
+static int ft_init_check(t_table *table)
+{
+	int		i;
+
+	i = 0;
+	while (i < table->nb_philos)
+	{
+		pthread_mutex_lock(&table->philos[i]->meal_time_lock);
+		if (!table->philos[i]->last_meal)
+		{
+			ft_set_sim_stop_flag(table, true);
+			write(2, "Simulation initiation fail.\n",29);
+			return (1);
+		}
+		pthread_mutex_unlock(&table->philos[i]->meal_time_lock);
+		i++;
+	}
+	return (0);
+}
+
 void	*ft_reaper(void *data)
 {
 	t_table			*table;
@@ -110,11 +100,13 @@ void	*ft_reaper(void *data)
 	table = (t_table *)data;
 	if (table->must_eat_count == 0)
 		return (NULL);
-	set_sim_stop_flag(table, false);
-	sim_start_delay(table->start_time);
+	ft_set_sim_stop_flag(table, false);
+	ft_sim_start_delay(table->start_time);
+	if (ft_init_check(table))
+		return (NULL);
 	while (true)
 	{
-		if (end_condition_reached(table) == true)
+		if (ft_end_condition_reached(table) == true)
 			return (NULL);
 		//usleep(1000);
 		usleep(100);
