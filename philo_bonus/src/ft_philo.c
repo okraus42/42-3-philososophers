@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/02 15:12:00 by mcombeau          #+#    #+#             */
-/*   Updated: 2023/08/03 15:58:06 by okraus           ###   ########.fr       */
+/*   Created: 2023/08/04 09:43:40 by okraus            #+#    #+#             */
+/*   Updated: 2023/08/04 11:31:34 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,31 @@ static void	eat_sleep_routine(t_philo *philo)
 *	This helps stagger philosopher's eating routines to avoid forks being
 *	needlessly monopolized by one philosopher to the detriment of others.
 */
-static void	think_routine(t_philo *philo, bool silent)
+static void	think_routine(t_philo *philo)
 {
 	time_t	time_to_think;
 
 	sem_wait(philo->sem_meal);
-	time_to_think = (philo->table->time_to_die
-			- (get_time_in_ms() - philo->last_meal)
-			- philo->table->time_to_eat) / 2;
+	time_to_think = (philo->table->time_to_eat
+			- philo->table->time_to_sleep);
 	sem_post(philo->sem_meal);
 	if (time_to_think < 0)
 		time_to_think = 0;
-	if (time_to_think == 0 && silent == true)
-		time_to_think = 1;
-	if (time_to_think > 600)
-		time_to_think = 200;
-	if (silent == false)
-		write_status(philo, false, THINKING);
+	write_status(philo, false, THINKING);
+	philo_sleep(time_to_think);
+}
+
+static void	think_routine_odd(t_philo *philo)
+{
+	time_t	time_to_think;
+
+	sem_wait(philo->sem_meal);
+	time_to_think = (philo->table->time_to_eat * 2
+			- philo->table->time_to_sleep);
+	sem_post(philo->sem_meal);
+	if (time_to_think < 0)
+		time_to_think = 0;
+	write_status(philo, false, THINKING);
 	philo_sleep(time_to_think);
 }
 
@@ -106,11 +114,22 @@ static void	lone_philo_routine(t_philo *philo)
 static void	philosopher_routine(t_philo *philo)
 {
 	if (philo->id % 2)
-		think_routine(philo, true);
-	while (1)
+		usleep(64 * philo->table->nb_philos);
+	if (philo->table->nb_philos % 2)
 	{
-		eat_sleep_routine(philo);
-		think_routine(philo, false);
+		while (1)
+		{
+			eat_sleep_routine(philo);
+			think_routine_odd(philo);
+		}
+	}
+	else
+	{
+		while (1)
+		{
+			eat_sleep_routine(philo);
+			think_routine(philo);
+		}
 	}
 }
 
