@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:44:34 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/04 09:44:38 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/22 11:57:24 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,9 @@ typedef struct s_philo
 	unsigned int		nb_forks_held;
 	unsigned int		id;
 	unsigned int		times_ate;
+	int					red;
+	int					green;
+	int					blue;
 	bool				ate_enough;
 	time_t				last_meal;
 	t_table				*table;
@@ -147,7 +150,7 @@ void			philosopher(t_table *table);
 void			grab_fork(t_philo *philo);
 
 //	time.c
-time_t			get_time_in_ms(void);
+time_t			ft_get_time_in_ms(void);
 void			philo_sleep(time_t sleep_time);
 void			sim_start_delay(time_t start_time);
 

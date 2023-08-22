@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:44:19 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/04 09:44:21 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/22 11:52:26 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,9 @@ static t_philo	**init_philosophers(t_table *table)
 			return (error_null(STR_ERR_MALLOC, NULL, 0));
 		philos[i]->table = table;
 		philos[i]->id = i;
+		philos[i]->red = ((i / 4) + 12 * i) % 64 + 192;
+		philos[i]->green = (32 + (i / 4) + 34 * i) % 64 + 192;
+		philos[i]->blue = ((i / 4) + i * 16) % 64 + 192;
 		if (!set_philo_sem_names(philos[i]))
 			return (error_null(STR_ERR_MALLOC, NULL, table));
 		philos[i]->times_ate = 0;
@@ -92,6 +95,7 @@ static t_philo	**init_philosophers(t_table *table)
 		philos[i]->ate_enough = false;
 		i++;
 	}
+	philos[i] = NULL;
 	return (philos);
 }
 

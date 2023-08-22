@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:36 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/04 09:43:38 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/22 11:57:57 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static bool	start_simulation(t_table *table)
 	unsigned int	i;
 	pid_t			pid;
 
-	table->start_time = get_time_in_ms() + ((table->nb_philos * 2) * 10);
+	table->start_time = ft_get_time_in_ms() + ((table->nb_philos * 2) * 10);
 	i = -1;
 	while (++i < table->nb_philos)
 	{

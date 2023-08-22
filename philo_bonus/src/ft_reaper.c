@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:29 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/04 09:43:33 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/22 11:58:22 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	*global_famine_reaper(void *data)
 static bool	end_condition_reached(t_table *table, t_philo *philo)
 {
 	sem_wait(philo->sem_meal);
-	if (get_time_in_ms() - philo->last_meal >= table->time_to_die)
+	if (ft_get_time_in_ms() - philo->last_meal >= table->time_to_die)
 	{
 		write_status(philo, true, DIED);
 		sem_post(table->this_philo->sem_philo_dead);

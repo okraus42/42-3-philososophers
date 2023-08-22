@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:54:46 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/03 11:59:17 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/22 11:54:55 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ static void	ft_print_status(t_philo *philo, char *str)
 {
 	// printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
 	// 	philo->id + 1, str);
-	printf("\e[30;48:2:%i:%i:%im%6ld  %3d %-30s\e[0m\n", philo->red, philo->green,
-		philo->blue, ft_get_time_in_ms() - philo->table->start_time,
-		philo->id + 1, str);
+	printf("\e[30;48:2:%i:%i:%im", philo->red, philo->green, philo->blue);
+	printf("%6ld", ft_get_time_in_ms() - philo->table->start_time);
+	printf("  %3d %-30s\e[0m\n", philo->id + 1, str);
 }
 
 /* write_status:

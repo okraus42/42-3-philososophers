@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:57 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/04 09:43:58 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/22 11:59:25 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ void	print_status_debug(t_philo *philo, char *color,
 {
 	if (status == GOT_FORK_1)
 		printf("[%10ld]\t%s%03d\t%s\e[0m: fork #1\n",
-			get_time_in_ms() - philo->table->start_time,
+			ft_get_time_in_ms() - philo->table->start_time,
 			color, philo->id + 1, str);
 	else if (status == GOT_FORK_2)
 		printf("[%10ld]\t%s%03d\t%s\e[0m: fork #2\n",
-			get_time_in_ms() - philo->table->start_time,
+			ft_get_time_in_ms() - philo->table->start_time,
 			color, philo->id + 1, str);
 	else
 		printf("[%10ld]\t%s%03d\t%s\e[0m\n",
-			get_time_in_ms() - philo->table->start_time,
+			ft_get_time_in_ms() - philo->table->start_time,
 			color, philo->id + 1, str);
 }
 
@@ -62,8 +62,11 @@ static void	write_status_debug(t_philo *philo, t_status status)
 */
 void	print_status(t_philo *philo, char *str)
 {
-	printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
-		philo->id + 1, str);
+	// printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
+	// 	philo->id + 1, str);
+	printf("\e[30;48:2:%i:%i:%im", philo->red, philo->green, philo->blue);
+	printf("%6ld", ft_get_time_in_ms() - philo->table->start_time);
+	printf("  %3d %-30s\e[0m\n", philo->id + 1, str);
 }
 
 /* write_status:
