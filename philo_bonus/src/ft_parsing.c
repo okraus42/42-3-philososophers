@@ -6,18 +6,13 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:51 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/04 09:43:52 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/27 14:15:21 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
 
-/* contains_only_digits:
-*	Checks if a string contains only digits 0 - 9.
-*	Returns true if the string only contains digits.
-*	Returns false if the string contains a character that is not a digit.
-*/
-static bool	contains_only_digits(char *str)
+static bool	ft_contains_only_digits(char *str)
 {
 	int	i;
 
@@ -31,15 +26,10 @@ static bool	contains_only_digits(char *str)
 	return (true);
 }
 
-/* integer_atoi:
-*	Converts a digit-only string into a positive integer.
-*	Returns the converted number between 0 and INT MAX.
-*	Returns -1 if the converted number exceeds INT MAX.
-*/
-int	integer_atoi(char *str)
+int	ft_integer_atoi(char *str)
 {
 	unsigned long long int	nb;
-	int						i;
+	unsigned int			i;
 
 	i = 0;
 	nb = 0;
@@ -53,27 +43,21 @@ int	integer_atoi(char *str)
 	return ((int)nb);
 }
 
-/* is_valid_input:
-*	Checks if all required arguments are valid, i.e. is a string of
-*	digits only, which does not exceed INT MAX. Also checks if the number
-*	of philosophers is valid (between 1 and MAX_PHILOS).
-*	Returns true if all arguments are valid, false if one of them is invalid.
-*/
-bool	is_valid_input(int ac, char **av)
+bool	ft_is_valid_input(int ac, char **av)
 {
-	int	i;
-	int	nb;
+	unsigned int	i;
+	int				nb;
 
 	i = 1;
-	while (i < ac)
+	while (i < (unsigned int)ac)
 	{
-		if (!contains_only_digits(av[i]))
-			return (msg(STR_ERR_INPUT_DIGIT, av[i], false));
-		nb = integer_atoi(av[i]);
+		if (!ft_contains_only_digits(av[i]))
+			return (ft_msg(STR_ERR_INPUT_DIGIT, av[i], false));
+		nb = ft_integer_atoi(av[i]);
 		if (i == 1 && (nb <= 0 || nb > MAX_PHILOS))
-			return (msg(STR_ERR_INPUT_POFLOW, STR_MAX_PHILOS, false));
+			return (ft_msg(STR_ERR_INPUT_POFLOW, STR_MAX_PHILOS, false));
 		if (i != 1 && nb == -1)
-			return (msg(STR_ERR_INPUT_DIGIT, av[i], false));
+			return (ft_msg(STR_ERR_INPUT_DIGIT, av[i], false));
 		i++;
 	}
 	return (true);

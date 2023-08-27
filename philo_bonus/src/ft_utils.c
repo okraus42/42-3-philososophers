@@ -6,15 +6,12 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:06 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/04 09:43:09 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/27 14:09:09 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
 
-/* ft_strlen:
-*	Measures the length of a string.
-*/
 size_t	ft_strlen(const char *str)
 {
 	size_t	i;
@@ -25,9 +22,6 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-/* ft_strcat:
-*	Concatenates two strings.
-*/
 char	*ft_strcat(char	*dst, const char *src)
 {
 	size_t	i;
@@ -46,10 +40,6 @@ char	*ft_strcat(char	*dst, const char *src)
 	return (dst);
 }
 
-/* ft_utoa:
-*	Turns a unsigned integer into a string of characters. The length of
-*	the string must be calculated in advance and specified to this function.
-*/
 char	*ft_utoa(unsigned int nb, size_t len)
 {
 	char	*ret;
@@ -67,7 +57,7 @@ char	*ft_utoa(unsigned int nb, size_t len)
 	return (ret);
 }
 
-void	unlink_global_sems(void)
+void	ft_unlink_global_sems(void)
 {
 	sem_unlink(SEM_NAME_FORKS);
 	sem_unlink(SEM_NAME_WRITE);
@@ -76,13 +66,13 @@ void	unlink_global_sems(void)
 	sem_unlink(SEM_NAME_STOP);
 }
 
-bool	start_grim_reaper_threads(t_table *table)
+bool	ft_start_grim_reaper_threads(t_table *table)
 {
 	if (pthread_create(&table->gluttony_reaper, NULL,
-			&global_gluttony_reaper, table) != 0)
-		return (error_failure(STR_ERR_THREAD, NULL, table));
+			&ft_global_gluttony_reaper, table) != 0)
+		return (ft_error_failure(STR_ERR_THREAD, NULL, table));
 	if (pthread_create(&table->famine_reaper, NULL,
-			&global_famine_reaper, table) != 0)
-		return (error_failure(STR_ERR_THREAD, NULL, table));
+			&ft_global_famine_reaper, table) != 0)
+		return (ft_error_failure(STR_ERR_THREAD, NULL, table));
 	return (true);
 }

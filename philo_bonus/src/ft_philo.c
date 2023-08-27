@@ -6,27 +6,20 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:40 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/22 13:02:18 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/27 14:11:43 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
 
-/* eat_sleep_routine:
-*	When a philosopher is ready to eat, he will try to acquire fork semaphores.
-*	Then the philosopher will eat for a certain amount of time. The time of
-*	the last meal is recorded at the beginning of the meal, not at the end,
-*	as per the subject's requirements.
-*/
-static void	eat_sleep_routine(t_philo *philo)
+static void	ft_eat_sleep_routine(t_philo *philo)
 {
-	//usleep(1000);
-	grab_fork(philo);
-	grab_fork(philo);
+	ft_grab_fork(philo);
+	ft_grab_fork(philo);
 	sem_wait(philo->sem_meal);
 	philo->last_meal = ft_get_time_in_ms();
 	sem_post(philo->sem_meal);
-	write_status(philo, false, EATING);
+	ft_write_status(philo, false, EATING);
 	philo_sleep(philo->table->time_to_eat);
 	sem_wait(philo->sem_meal);
 	philo->times_ate += 1;
@@ -34,21 +27,11 @@ static void	eat_sleep_routine(t_philo *philo)
 	sem_post(philo->sem_forks);
 	sem_post(philo->sem_forks);
 	philo->nb_forks_held -= 2;
-	//usleep(300);
-	write_status(philo, false, SLEEPING);
+	ft_write_status(philo, false, SLEEPING);
 	philo_sleep(philo->table->time_to_sleep);
 }
 
-/* think_routine:
-*	Once a philosopher is done sleeping, he will think for a certain
-*	amount of time before starting to eat again.
-*	The time_to_think is calculated depending on how long it has been
-*	since the philosopher's last meal, the time_to_eat and the time_to_die
-*	to determine when the philosopher will be hungry again.
-*	This helps stagger philosopher's eating routines to avoid forks being
-*	needlessly monopolized by one philosopher to the detriment of others.
-*/
-static void	think_routine(t_philo *philo)
+static void	ft_think_routine_even(t_philo *philo)
 {
 	time_t	time_to_think;
 
@@ -58,11 +41,11 @@ static void	think_routine(t_philo *philo)
 	sem_post(philo->sem_meal);
 	if (time_to_think < 0)
 		time_to_think = 0;
-	write_status(philo, false, THINKING);
+	ft_write_status(philo, false, THINKING);
 	philo_sleep(time_to_think);
 }
 
-static void	think_routine_odd(t_philo *philo)
+static void	ft_think_routine_odd(t_philo *philo)
 {
 	time_t	time_to_think;
 
@@ -72,97 +55,53 @@ static void	think_routine_odd(t_philo *philo)
 	sem_post(philo->sem_meal);
 	if (time_to_think < 0)
 		time_to_think = 0;
-	write_status(philo, false, THINKING);
+	ft_write_status(philo, false, THINKING);
 	philo_sleep(time_to_think);
 }
 
-/* lone_philo_routine:
-*	This routine is invoked when there is only a single philosopher.
-*	A single philosopher only has one fork, and so cannot eat. The
-*	philosopher will pick up that fork, wait as long as time_to_die and die.
-*	This is a separate routine to make sure that the process does not get
-*	stuck waiting for a fork or a writing semaphore that will never unlock.
-*/
-static void	lone_philo_routine(t_philo *philo)
+static void	ft_philosopher_routine(t_philo *philo)
 {
-	philo->sem_philo_full = sem_open(SEM_NAME_FULL, O_CREAT,
-			S_IRUSR | S_IWUSR, philo->table->nb_philos);
-	if (philo->sem_philo_full == SEM_FAILED)
-		exit(CHILD_EXIT_ERR_SEM);
-	sem_wait(philo->sem_philo_full);
-	sim_start_delay(philo->table->start_time);
-	if (philo->table->must_eat_count == 0)
-	{
-		sem_post(philo->sem_philo_full);
-		exit(CHILD_EXIT_PHILO_FULL);
-	}
-	if (DEBUG_FORMATTING == true)
-		print_status_debug(philo, PURPLE, "has taken a fork", GOT_FORK_1);
-	else
-		print_status(philo, "has taken a fork");
-	philo_sleep(philo->table->time_to_die);
-	if (DEBUG_FORMATTING == true)
-		print_status_debug(philo, RED, "died", DIED);
-	else
-		print_status(philo, "died");
-	free_table(philo->table);
-	exit(CHILD_EXIT_PHILO_DEAD);
-}
-
-/* philosopher_routine:
-*	Runs the philosopher process' routine as long as the philosopher
-*	is alive. The philosopher will eat, sleep and think.
-*/
-static void	philosopher_routine(t_philo *philo)
-{
-	if (philo->id % 2)
+	if (!(philo->id & 1))
 		usleep(64 * philo->table->nb_philos);
-	if (philo->table->nb_philos % 2)
+	if (philo->table->nb_philos & 1)
 	{
 		while (1)
 		{
-			eat_sleep_routine(philo);
-			think_routine_odd(philo);
+			ft_eat_sleep_routine(philo);
+			ft_think_routine_odd(philo);
 		}
 	}
 	else
 	{
 		while (1)
 		{
-			eat_sleep_routine(philo);
-			think_routine(philo);
+			ft_eat_sleep_routine(philo);
+			ft_think_routine_even(philo);
 		}
 	}
 }
 
-/* philosopher:
-*	The philosopher thread routine. The philosopher must eat, sleep
-*	and think. In order to avoid conflicts between philosopher processes,
-*	philosophers with an even id start by thinking, which delays their
-*	meal time by a small margin. This allows odd-id philosophers to
-*	grab both of their forks first, avoiding deadlocks.
-*/
-void	philosopher(t_table *table)
+void	ft_philosopher(t_table *table)
 {
 	t_philo	*philo;
 
 	philo = table->this_philo;
 	if (philo->table->nb_philos == 1)
-		lone_philo_routine(philo);
-	init_philo_ipc(table, philo);
+		ft_lone_philo_routine(philo);
+	ft_init_philo_ipc(table, philo);
 	if (philo->table->must_eat_count == 0)
 	{
 		sem_post(philo->sem_philo_full);
-		child_exit(table, CHILD_EXIT_PHILO_FULL);
+		ft_child_exit(table, ft_child_exit_PHILO_FULL);
 	}
 	if (philo->table->time_to_die == 0)
 	{
 		sem_post(philo->sem_philo_dead);
-		child_exit(table, CHILD_EXIT_PHILO_DEAD);
+		ft_child_exit(table, ft_child_exit_PHILO_DEAD);
 	}
 	sem_wait(philo->sem_meal);
 	philo->last_meal = philo->table->start_time;
 	sem_post(philo->sem_meal);
-	sim_start_delay(philo->table->start_time);
-	philosopher_routine(philo);
+	ft_sim_start_delay(philo->table->start_time);
+	ft_philosopher_routine(philo);
 }

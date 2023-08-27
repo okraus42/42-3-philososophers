@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:44:34 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/22 11:57:24 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/27 14:20:16 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,6 @@
 
 # define MAX_PHILOS	250
 # define STR_MAX_PHILOS "250"
-
-# ifndef DEBUG_FORMATTING
-#  define DEBUG_FORMATTING 0
-# endif
 
 # define NC		"\e[0m"
 # define RED	"\e[31m"
@@ -63,10 +59,10 @@ there must be between 1 and %s philosophers.\n"
 # define SEM_NAME_STOP	"/philo_global_stop"
 # define SEM_NAME_MEAL	"/philo_local_meal_"
 
-# define CHILD_EXIT_ERR_PTHREAD	40
-# define CHILD_EXIT_ERR_SEM		41
-# define CHILD_EXIT_PHILO_FULL	42
-# define CHILD_EXIT_PHILO_DEAD	43
+# define ft_child_exit_ERR_PTHREAD	40
+# define ft_child_exit_ERR_SEM		41
+# define ft_child_exit_PHILO_FULL	42
+# define ft_child_exit_PHILO_DEAD	43
 
 /******************************************************************************
 *                                 Structures                                  *
@@ -98,7 +94,7 @@ typedef struct s_table
 
 typedef struct s_philo
 {
-	pthread_t			personal_grim_reaper;
+	pthread_t			ft_personal_grim_reaper;
 	sem_t				*sem_forks;
 	sem_t				*sem_write;
 	sem_t				*sem_philo_full;
@@ -131,58 +127,56 @@ typedef enum e_status
 ******************************************************************************/
 
 //	main.c
-bool			has_simulation_stopped(t_table *table);
+bool			ft_has_simulation_stopped(t_table *table);
 
 //	parsing.c
-bool			is_valid_input(int ac, char **av);
-int				integer_atoi(char *str);
+bool			ft_is_valid_input(int ac, char **av);
+int				ft_integer_atoi(char *str);
 
 //	init.c
-t_table			*init_table(int ac, char **av, int i);
+t_table			*ft_init_table(int ac, char **av);
 
 // ipc.c
-void			init_philo_ipc(t_table *table, t_philo *philo);
+void			ft_init_philo_ipc(t_table *table, t_philo *philo);
 
 //	philosopher.c
-void			philosopher(t_table *table);
+void			ft_philosopher(t_table *table);
 
 // philosopher_utils.c
-void			grab_fork(t_philo *philo);
+void			ft_grab_fork(t_philo *philo);
+void			ft_lone_philo_routine(t_philo *philo);
 
 //	time.c
 time_t			ft_get_time_in_ms(void);
 void			philo_sleep(time_t sleep_time);
-void			sim_start_delay(time_t start_time);
+void			ft_sim_start_delay(time_t start_time);
 
 //	output.c
-void			write_status(t_philo *philo, bool reaper, t_status status);
-void			print_status(t_philo *philo, char *str);
-void			print_status_debug(t_philo *philo, char *color, char *str,
-					t_status status);
-void			write_outcome(t_table *table);
+void			ft_write_status(t_philo *philo, bool reaper, t_status status);
+void			ft_print_status(t_philo *philo, char *str);
 
 //	grim_reaper.c
-void			*global_gluttony_reaper(void *data);
-void			*global_famine_reaper(void *data);
-void			*personal_grim_reaper(void *data);
-int				kill_all_philos(t_table *table, int exit_code);
+void			*ft_global_gluttony_reaper(void *data);
+void			*ft_global_famine_reaper(void *data);
+void			*ft_personal_grim_reaper(void *data);
+int				ft_kill_all_philos(t_table *table, int exit_code);
 
 // utils.c
 char			*ft_utoa(unsigned int nb, size_t len);
 char			*ft_strcat(char	*dst, const char *src);
 size_t			ft_strlen(const char *str);
-void			unlink_global_sems(void);
-bool			start_grim_reaper_threads(t_table *table);
+void			ft_unlink_global_sems(void);
+bool			ft_start_grim_reaper_threads(t_table *table);
 
 // cleanup.c
-void			*free_table(t_table *table);
-int				sem_error_cleanup(t_table *table);
-int				table_cleanup(t_table *table, int exit_code);
+void			*ft_free_table(t_table *table);
+int				ft_sem_error_cleanup(t_table *table);
+int				ft_table_cleanup(t_table *table, int exit_code);
 
 //	exit.c
-void			child_exit(t_table *table, int exit_code);
-int				msg(char *str, char *detail, int exit_no);
-int				error_failure(char *str, char *details, t_table *table);
-void			*error_null(char *str, char *details, t_table *table);
+void			ft_child_exit(t_table *table, int exit_code);
+int				ft_msg(char *str, char *detail, int exit_no);
+int				ft_error_failure(char *str, char *details, t_table *table);
+void			*ft_error_null(char *str, char *details, t_table *table);
 
 #endif

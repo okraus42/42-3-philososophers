@@ -6,23 +6,13 @@
 #    By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/04 09:44:51 by okraus            #+#    #+#              #
-#    Updated: 2023/08/04 09:45:05 by okraus           ###   ########.fr        #
+#    Updated: 2023/08/27 13:35:48 by okraus           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		= cc
+CC		= gcc
 CFLAGS	= -Werror -Wall -Wextra -pthread -g
 NAME	= philo_bonus
-
-# Run 'make re MODE=pretty' for color formatting.
-# Run 'make re MODE=debug' for debug formatting.
-MODE	= none
-ifeq ($(MODE), pretty)
-	CFLAGS	+= -D DEBUG_FORMATTING=1
-endif
-ifeq ($(MODE), debug)
-	CFLAGS	+= -D DEBUG_FORMATTING=1 -fsanitize=thread -g
-endif
 
 SRC_PATH = src/
 OBJ_PATH = objects/
