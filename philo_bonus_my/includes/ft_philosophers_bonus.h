@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:44:34 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/30 12:46:56 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/30 13:31:49 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@
 # define STR_USAGE	"philo_bonus: usage: ./philo <number_of_philosophers> \
 <time_to_die> <time_to_eat> <time_to_sleep> \
 [number_of_times_each_philosopher_must_eat]\n"
-# define STR_ERR_INPUT_DIGIT1	"philo_bonus: invalid input: "
-# define STR_ERR_INPUT_DIGIT2 ": not a valid unsigned integer between \
+# define STR_ERR_INPUT_DIGIT1	"philo_bonus: invalid input: <"
+# define STR_ERR_INPUT_DIGIT2 ">: not a valid unsigned integer between \
 0 and 99999.\n"
 # define STR_ERR_INPUT_POFLOW1	"philo_bonus: invalid input: \
 there must be between 1 and "
@@ -130,5 +130,11 @@ typedef enum e_status
 
 //	main.c
 
+// others.c
+int	ft_is_valid_input(int argc, char *argv[]);
+int	ft_mini_atoi(char *str);
+int	ft_contains_only_digits(char *str);
+int	ft_error_msg(char *str, char *detail1, char *detail2, char *detail3);
+int	ft_strlen(char *str);
 
 #endif
