@@ -1,0 +1,134 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_philosophers_bonus.h                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/04 09:44:34 by okraus            #+#    #+#             */
+/*   Updated: 2023/08/30 12:46:56 by okraus           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef FT_PHILOSOPHERS_BONUS_H
+# define FT_PHILOSOPHERS_BONUS_H
+
+# include <limits.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/time.h>
+# include <stdbool.h>
+# include <semaphore.h>
+# include <signal.h>
+# include <fcntl.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <pthread.h>
+
+/******************************************************************************
+*                                     Macros                                  *
+******************************************************************************/
+
+# define MAX_PHILOS	250
+# define STR_MAX_PHILOS "250"
+
+# define NC		"\e[0m"
+// # define RED	"\e[31m"
+// # define GREEN	"\e[32m"
+// # define PURPLE	"\e[35m"
+// # define CYAN	"\e[36m"
+
+//# define STR_PROG_NAME	"philo_bonus:"
+# define STR_USAGE	"philo_bonus: usage: ./philo <number_of_philosophers> \
+<time_to_die> <time_to_eat> <time_to_sleep> \
+[number_of_times_each_philosopher_must_eat]\n"
+# define STR_ERR_INPUT_DIGIT1	"philo_bonus: invalid input: "
+# define STR_ERR_INPUT_DIGIT2 ": not a valid unsigned integer between \
+0 and 99999.\n"
+# define STR_ERR_INPUT_POFLOW1	"philo_bonus: invalid input: \
+there must be between 1 and "
+# define STR_ERR_INPUT_POFLOW2	" philosophers.\n"
+# define STR_ERR_THREAD	"philo_bonus: error: Could not create thread.\n"
+# define STR_ERR_MALLOC	"philo_bonus: error: Could not allocate memory.\n"
+# define STR_ERR_SEM	"philo_bonus: error: Could not create semaphore.\n"
+# define STR_ERR_FORK	"philo_bonus: error: Could not fork child.\n"
+
+# define SEM_NAME_FORKS "/philo_global_forks"
+# define SEM_NAME_WRITE "/philo_global_write"
+# define SEM_NAME_FULL	"/philo_global_full"
+# define SEM_NAME_DEAD	"/philo_global_dead"
+# define SEM_NAME_STOP	"/philo_global_stop"
+# define SEM_NAME_MEAL	"/philo_local_meal_"
+
+# define ft_child_exit_ERR_PTHREAD	40
+# define ft_child_exit_ERR_SEM		41
+# define ft_child_exit_PHILO_FULL	42
+# define ft_child_exit_PHILO_DEAD	43
+
+/******************************************************************************
+*                                 Structures                                  *
+******************************************************************************/
+
+typedef struct s_philo	t_philo;
+
+typedef struct s_table
+{
+	time_t		start_time;
+	int			nb_philos;
+	time_t		time_to_die;
+	time_t		time_to_eat;
+	time_t		time_to_sleep;
+	int			must_eat_count;
+	sem_t		*sem_forks;
+	sem_t		*sem_write;
+	sem_t		*sem_philo_full;
+	int			philo_full_count;
+	sem_t		*sem_philo_dead;
+	sem_t		*sem_stop;
+	int			stop_sim;
+	t_philo		**philos;
+	t_philo		*this_philo;
+	pid_t		*pids;
+	pthread_t	gluttony_reaper;
+	pthread_t	famine_reaper;
+}	t_table;
+
+typedef struct s_philo
+{
+	pthread_t	ft_personal_grim_reaper;
+	sem_t		*sem_forks;
+	sem_t		*sem_write;
+	sem_t		*sem_philo_full;
+	sem_t		*sem_philo_dead;
+	sem_t		*sem_meal;
+	char		*sem_meal_name;
+	int			nb_forks_held;
+	int			id;
+	int			times_ate;
+	int			red;
+	int			green;
+	int			blue;
+	int			ate_enough;
+	time_t		last_meal;
+	t_table		*table;
+}	t_philo;
+
+typedef enum e_status
+{
+	DIED = 0,
+	EATING = 1,
+	SLEEPING = 2,
+	THINKING = 3,
+	GOT_FORK_1 = 4,
+	GOT_FORK_2 = 5
+}	t_status;
+
+/******************************************************************************
+*                           Function Prototypes                               *
+******************************************************************************/
+
+//	main.c
+
+
+#endif
