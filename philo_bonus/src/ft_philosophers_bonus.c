@@ -6,11 +6,12 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:36 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/27 14:20:30 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/31 15:35:40 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
+//done
 
 bool	ft_has_simulation_stopped(t_table *table)
 {
@@ -21,6 +22,7 @@ bool	ft_has_simulation_stopped(t_table *table)
 	sem_post(table->sem_stop);
 	return (ret);
 }
+//done
 
 static bool	ft_start_simulation(t_table *table)
 {
@@ -46,6 +48,7 @@ static bool	ft_start_simulation(t_table *table)
 		return (false);
 	return (true);
 }
+//done
 
 static int	ft_get_child_philo(t_table *table, pid_t *pid)
 {
@@ -71,6 +74,7 @@ static int	ft_get_child_philo(t_table *table, pid_t *pid)
 	}
 	return (0);
 }
+//done
 
 static int	ft_stop_simulation(t_table	*table)
 {
@@ -98,6 +102,7 @@ static int	ft_stop_simulation(t_table	*table)
 	}
 	return (0);
 }
+//done
 
 int	main(int ac, char **av)
 {

@@ -6,12 +6,13 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:42:16 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/27 14:22:23 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/31 15:36:04 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
 
+//done
 void	*ft_free_table(t_table *table)
 {
 	unsigned int	i;
@@ -50,6 +51,7 @@ int	ft_sem_error_cleanup(t_table *table)
 	return (ft_error_failure(STR_ERR_SEM, NULL, table));
 }
 
+//done
 int	ft_table_cleanup(t_table *table, int exit_code)
 {
 	if (table != NULL)

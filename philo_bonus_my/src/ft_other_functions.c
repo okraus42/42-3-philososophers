@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 13:10:54 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/30 13:33:48 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/31 15:34:22 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,85 @@ int	ft_is_valid_input(int argc, char *argv[])
 		++i;
 	}
 	return (true);
+}
+
+t_table	*ft_init_table(int argc, char *argv[])
+{
+	t_table	*table;
+
+	table = malloc(sizeof(t_table) * 1);
+	if (!table)
+		return (ft_error_msg(STR_ERR_MALLOC, NULL, NULL, NULL), NULL);
+	table->nb_philos = ft_mini_atoi(argv[1]);
+	table->time_to_die = ft_mini_atoi(argv[2]);
+	table->time_to_eat = ft_mini_atoi(argv[3]);
+	table->time_to_sleep = ft_mini_atoi(argv[4]);
+	table->must_eat_count = -1;
+	table->philo_full_count = 0;
+	table->stop_sim = 0;
+	if (argc == 6)
+		table->must_eat_count = ft_integer_atoi(argv[5]);
+	if (!ft_init_global_semaphores(table))
+		return (NULL);
+	table->philos = ft_init_philosophers(table);
+	if (!table->philos)
+		return (NULL);
+	table->pids = malloc(sizeof * table->pids * table->nb_philos);
+	if (!table->pids)
+		return (ft_error_msg(STR_ERR_MALLOC, NULL, NULL, NULL), NULL);
+	return (table);
+}
+
+void	*ft_free_table2(t_table *table)
+{
+	int	i;
+
+	if (!table)
+		return (NULL);
+	if (table->philos != NULL)
+	{
+		i = 0;
+		while (i < table->nb_philos)
+		{
+			if (table->philos[i] != NULL)
+			{
+				if (table->philos[i]->sem_meal_name)
+					free(table->philos[i]->sem_meal_name);
+				free(table->philos[i]);
+			}
+			i++;
+		}
+		free(table->philos);
+	}
+	if (table->pids)
+		free(table->pids);
+	free(table);
+	return (NULL);
+}
+
+int	ft_free_table(t_table *table, int exit_code)
+{
+	if (table != NULL)
+	{
+		pthread_join(table->famine_reaper, NULL);
+		pthread_join(table->gluttony_reaper, NULL);
+		sem_close(table->sem_forks);
+		sem_close(table->sem_write);
+		sem_close(table->sem_philo_full);
+		sem_close(table->sem_philo_dead);
+		sem_close(table->sem_stop);
+		ft_unlink_global_sems();
+		ft_free_table2(table);
+	}
+	return (exit_code);
+}
+
+int	ft_has_simulation_stopped(t_table *table)
+{
+	int	ret;
+
+	sem_wait(table->sem_stop);
+	ret = table->stop_sim;
+	sem_post(table->sem_stop);
+	return (ret);
 }

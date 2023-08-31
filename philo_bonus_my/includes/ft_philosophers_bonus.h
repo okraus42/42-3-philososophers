@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:44:34 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/30 13:31:49 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/31 15:39:55 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,19 @@ typedef enum e_status
 //	main.c
 
 // others.c
-int	ft_is_valid_input(int argc, char *argv[]);
-int	ft_mini_atoi(char *str);
-int	ft_contains_only_digits(char *str);
-int	ft_error_msg(char *str, char *detail1, char *detail2, char *detail3);
-int	ft_strlen(char *str);
+int		ft_is_valid_input(int argc, char *argv[]);
+int		ft_mini_atoi(char *str);
+int		ft_contains_only_digits(char *str);
+int		ft_error_msg(char *str, char *detail1, char *detail2, char *detail3);
+int		ft_strlen(char *str);
+t_table	*ft_init_table(int argc, char *argv[]);
+int		ft_free_table(t_table *table, int exit_code);
+void	*ft_free_table2(t_table *table);
+int		ft_has_simulation_stopped(t_table *table);
+
+void	ft_philosopher(t_table *table);
+
+
+
 
 #endif

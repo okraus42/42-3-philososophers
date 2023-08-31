@@ -6,7 +6,7 @@
 #    By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/04 09:44:51 by okraus            #+#    #+#              #
-#    Updated: 2023/08/30 13:13:52 by okraus           ###   ########.fr        #
+#    Updated: 2023/08/31 15:40:08 by okraus           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ SRC_PATH = src/
 OBJ_PATH = objects/
 
 SRC		=	ft_philosophers_bonus.c \
-			ft_other_functions.c
+			ft_other_functions.c \
+			ft_philo.c
 
 SRCS	= $(addprefix $(SRC_PATH), $(SRC))
 OBJ		= $(SRC:.c=.o)

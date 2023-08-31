@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:40 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/27 14:11:43 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/31 15:39:42 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static void	ft_philosopher_routine(t_philo *philo)
 	}
 }
 
+//done
 void	ft_philosopher(t_table *table)
 {
 	t_philo	*philo;

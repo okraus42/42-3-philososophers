@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_init.c                                          :+:      :+:    :+:   */
+/*   ft_philo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/04 09:44:19 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/31 15:36:31 by okraus           ###   ########.fr       */
+/*   Created: 2023/08/31 15:39:22 by okraus            #+#    #+#             */
+/*   Updated: 2023/08/31 15:47:00 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
 
-static char	*ft_set_local_sem_name(const char *str, unsigned int id)
+//todo
+static char	*ft_set_local_sem_name(const char *str, int id)
 {
-	unsigned int	i;
-	unsigned int	digit_count;
+	int	i;
+	int	digit_count;
 	char			*sem_name;
 	char			*tmp;
 
@@ -38,18 +39,20 @@ static char	*ft_set_local_sem_name(const char *str, unsigned int id)
 	return (sem_name);
 }
 
-static bool	ft_set_philo_sem_names(t_philo *philo)
+//todo
+static int	ft_set_philo_sem_names(t_philo *philo)
 {
 	philo->sem_meal_name = ft_set_local_sem_name(SEM_NAME_MEAL, philo->id + 1);
 	if (philo->sem_meal_name == NULL)
-		return (false);
-	return (true);
+		return (1);
+	return (0);
 }
 
+//todo
 static t_philo	**ft_init_philosophers(t_table *table)
 {
 	t_philo			**philos;
-	unsigned int	i;
+	int	i;
 
 	philos = malloc(sizeof(t_philo) * (table->nb_philos + 1));
 	if (!philos)
@@ -69,7 +72,7 @@ static t_philo	**ft_init_philosophers(t_table *table)
 			return (ft_error_null(STR_ERR_MALLOC, NULL, table));
 		philos[i]->times_ate = 0;
 		philos[i]->nb_forks_held = 0;
-		philos[i]->ate_enough = false;
+		philos[i]->ate_enough = 0;
 		i++;
 	}
 	philos[i] = NULL;
@@ -102,30 +105,27 @@ static bool	ft_init_global_semaphores(t_table *table)
 	return (true);
 }
 
-//done
-t_table	*ft_init_table(int ac, char **av)
+void	ft_philosopher(t_table *table)
 {
-	t_table	*table;
+	t_philo	*philo;
 
-	table = malloc(sizeof(t_table) * 1);
-	if (!table)
-		return (ft_error_null(STR_ERR_MALLOC, NULL, 0));
-	table->nb_philos = ft_integer_atoi(av[1]);
-	table->time_to_die = ft_integer_atoi(av[2]);
-	table->time_to_eat = ft_integer_atoi(av[3]);
-	table->time_to_sleep = ft_integer_atoi(av[4]);
-	table->must_eat_count = -1;
-	table->philo_full_count = 0;
-	table->stop_sim = false;
-	if (ac == 6)
-		table->must_eat_count = ft_integer_atoi(av[5]);
-	if (!ft_init_global_semaphores(table))
-		return (NULL);
-	table->philos = ft_init_philosophers(table);
-	if (!table->philos)
-		return (NULL);
-	table->pids = malloc(sizeof * table->pids * table->nb_philos);
-	if (!table->pids)
-		return (ft_error_null(STR_ERR_MALLOC, NULL, 0));
-	return (table);
+	philo = table->this_philo;
+	if (philo->table->nb_philos == 1)
+		ft_lone_philo_routine(philo);
+	ft_init_philo_ipc(table, philo);
+	if (philo->table->must_eat_count == 0)
+	{
+		sem_post(philo->sem_philo_full);
+		ft_child_exit(table, ft_child_exit_PHILO_FULL);
+	}
+	if (philo->table->time_to_die == 0)
+	{
+		sem_post(philo->sem_philo_dead);
+		ft_child_exit(table, ft_child_exit_PHILO_DEAD);
+	}
+	sem_wait(philo->sem_meal);
+	philo->last_meal = philo->table->start_time;
+	sem_post(philo->sem_meal);
+	ft_sim_start_delay(philo->table->start_time);
+	ft_philosopher_routine(philo);
 }

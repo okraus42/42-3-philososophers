@@ -6,12 +6,13 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:44:24 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/27 14:23:08 by okraus           ###   ########.fr       */
+/*   Updated: 2023/08/31 15:37:51 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
 
+//done
 int	ft_msg(char *str, char *detail, int exit_no)
 {
 	if (!detail)
