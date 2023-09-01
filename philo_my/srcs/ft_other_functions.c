@@ -6,12 +6,11 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 12:37:29 by okraus            #+#    #+#             */
-/*   Updated: 2023/09/01 12:45:44 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 13:29:24 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers.h"
-
 
 //todo - init
 static pthread_mutex_t	*ft_init_forks(t_table *table)
@@ -160,18 +159,6 @@ static void	ft_print_status(t_philo *philo, char *str)
 	printf("%6ld", ft_get_time_in_ms() - philo->table->start_time);
 	printf("  %3d %-30s\e[0m\n", philo->id + 1, str);
 }
-
-//todo - print
-
-static void	ft_print_status(t_philo *philo, char *str)
-{
-	// printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
-	// 	philo->id + 1, str);
-	printf("\e[30;48:2:%i:%i:%im", philo->red, philo->green, philo->blue);
-	printf("%6ld", ft_get_time_in_ms() - philo->table->start_time);
-	printf("  %3d %-30s\e[0m\n", philo->id + 1, str);
-}
-
 
 //todo - print
 void	ft_write_status(t_philo *philo, bool reaper_report, t_status status)
@@ -356,8 +343,8 @@ void	ft_sim_start_delay(time_t start_time)
 //to do - utils
 int	ft_atoi(char *str)
 {
-	long long int	n;
-	int				i;
+	int	n;
+	int	i;
 
 	i = 0;
 	n = 0;
@@ -374,7 +361,7 @@ int	ft_atoi(char *str)
 		return (-3);
 	if (n > 99999)
 		return (-3);
-	return ((int)n);
+	return (n);
 }
 
 
@@ -383,33 +370,77 @@ int	ft_check_input(int argc, char *argv[])
 {
 	if (argc < 5 || argc > 6)
 	{
-		write(2, STR_USAGE, 135);
+		write(2, STR_USAGE, 323);
 		return (1);
 	}
-	if (ft_atoi(argv[1]) < 1)
+	if (ft_atoi(argv[1]) < 1 || ft_atoi(argv[1]) > MAX_PHILOS)
 	{
-		write(2, STR_USAGE, 135);
+		write(2, STR_USAGE, 323);
 		return (1);
 	}
 	if (ft_atoi(argv[2]) < 0)
 	{
-		write(2, STR_USAGE, 135);
+		write(2, STR_USAGE, 323);
 		return (1);
 	}
 	if (ft_atoi(argv[3]) < 0)
 	{
-		write(2, STR_USAGE, 135);
+		write(2, STR_USAGE, 323);
 		return (1);
 	}
 	if (ft_atoi(argv[4]) < 0)
 	{
-		write(2, STR_USAGE, 135);
+		write(2, STR_USAGE, 323);
 		return (1);
 	}
 	if (argv[5] && ft_atoi(argv[5]) < 0)
 	{
-		write(2, STR_USAGE, 135);
+		write(2, STR_USAGE, 323);
 		return (1);
 	}
 	return (0);
+}
+
+
+//todo - free
+void	ft_free_table(t_table *table)
+{
+	int	i;
+
+	if (!table)
+		return ;
+	if (table->fork_locks != NULL)
+		free(table->fork_locks);
+	table->fork_locks = NULL;
+	if (table->philos != NULL)
+	{
+		i = 0;
+		while (i < table->nb_philos)
+		{
+			if (table->philos[i] != NULL)
+				free(table->philos[i]);
+			table->philos[i] = NULL;
+			i++;
+		}
+		free(table->philos);
+		table->philos = NULL;
+	}
+	free(table);
+}
+
+//todo - free
+void	ft_destroy_mutexes(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->nb_philos)
+	{
+		pthread_mutex_destroy(&table->fork_locks[i]);
+		pthread_mutex_destroy(&table->philos[i]->meal_time_lock);
+		i++;
+	}
+	pthread_mutex_destroy(&table->write_lock);
+	pthread_mutex_destroy(&table->sim_stop_lock);
+	pthread_mutex_destroy(&table->extra_lock);
 }
