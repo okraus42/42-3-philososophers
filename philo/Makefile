@@ -6,30 +6,20 @@
 #    By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/22 15:33:07 by okraus            #+#    #+#              #
-#    Updated: 2023/09/01 13:07:09 by okraus           ###   ########.fr        #
+#    Updated: 2023/09/01 18:01:02 by okraus           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= philo
 CC		= cc
 CFLAGS	= -Werror -Wall -Wextra -pthread -g
-
-# Run 'make re MODE=pretty' for color formatting.
-# Run 'make re MODE=debug' for debug formatting.
-MODE	= none
-ifeq ($(MODE), pretty)
-	CFLAGS	+= -D DEBUG_FORMATTING=1
-endif
-ifeq ($(MODE), debug)
-	CFLAGS	+= -D DEBUG_FORMATTING=1 -fsanitize=thread
-endif
+NAME	= philo
 
 SRC_PATH = srcs/
-OBJ_PATH = objs/
+OBJ_PATH = objects/
 
 SRC		=	ft_philosophers.c \
-			ft_philo.c \
-			ft_other_functions.c
+			ft_other_functions.c \
+			ft_philo.c
 
 SRCS	= $(addprefix $(SRC_PATH), $(SRC))
 OBJ		= $(SRC:.c=.o)

@@ -6,15 +6,15 @@
 #    By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/04 09:44:51 by okraus            #+#    #+#              #
-#    Updated: 2023/08/31 15:40:08 by okraus           ###   ########.fr        #
+#    Updated: 2023/09/01 18:01:06 by okraus           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		= gcc
+CC		= cc
 CFLAGS	= -Werror -Wall -Wextra -pthread -g
 NAME	= philo_bonus
 
-SRC_PATH = src/
+SRC_PATH = srcs/
 OBJ_PATH = objects/
 
 SRC		=	ft_philosophers_bonus.c \

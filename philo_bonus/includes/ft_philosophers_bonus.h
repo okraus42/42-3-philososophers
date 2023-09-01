@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:44:34 by okraus            #+#    #+#             */
-/*   Updated: 2023/09/01 16:01:37 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 18:06:03 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,12 @@
 // # define CYAN	"\e[36m"
 
 //# define STR_PROG_NAME	"philo_bonus:"
-# define STR_USAGE	"philo_bonus: usage: ./philo <number_of_philosophers> \
-<time_to_die> <time_to_eat> <time_to_sleep> \
-[number_of_times_each_philosopher_must_eat]\n"
+# define STR_USAGE				"philo: usage: ./philo_bonus \
+<number_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> \
+[number_of_times_each_philosopher_must_eat]\n\
+<number_of_philosophers>: 1-250\n<time_to_die>:            1-99999\n\
+<time_to_eat>:            1-99999\n<time_to_sleep>:          1-99999\n\
+[number_of_times_each_philosopher_must_eat]: 1-99999\n"
 # define STR_ERR_INPUT_DIGIT1	"philo_bonus: invalid input: <"
 # define STR_ERR_INPUT_DIGIT2 ">: not a valid unsigned integer between \
 0 and 99999.\n"

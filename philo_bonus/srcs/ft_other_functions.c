@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 13:10:54 by okraus            #+#    #+#             */
-/*   Updated: 2023/09/01 16:18:43 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 18:44:58 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -423,12 +423,14 @@ int	ft_is_valid_input(int argc, char *argv[])
 	while (i < argc)
 	{
 		if (!ft_contains_only_digits(argv[i]))
-			return (ft_error_msg(STR_ERR_INPUT_DIGIT1, argv[i],	STR_ERR_INPUT_DIGIT2, NULL));
+			return (ft_error_msg(STR_USAGE, NULL, NULL, NULL), 0);
 		nb = ft_mini_atoi(argv[i]);
 		if (i == 1 && (nb <= 0 || nb > MAX_PHILOS))
-			return (ft_error_msg(STR_ERR_INPUT_POFLOW1, STR_MAX_PHILOS,	STR_ERR_INPUT_POFLOW2, NULL));
+			return (ft_error_msg(STR_USAGE, NULL, NULL, NULL), 0);
 		if (i != 1 && nb == -1)
-			return (ft_error_msg(STR_ERR_INPUT_DIGIT1, argv[i],	STR_ERR_INPUT_DIGIT2, NULL));
+		{
+			return (ft_error_msg(STR_USAGE, NULL, NULL, NULL), 0);
+		}
 		++i;
 	}
 	return (true);
