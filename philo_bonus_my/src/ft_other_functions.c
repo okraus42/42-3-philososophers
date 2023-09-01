@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 13:10:54 by okraus            #+#    #+#             */
-/*   Updated: 2023/09/01 12:36:45 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 16:18:43 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	ft_sim_start_delay(time_t start_time)
 //todo - reapers
 int	ft_kill_all_philos(t_table *table, int exit_code)
 {
-	unsigned int	i;
+	int	i;
 
 	i = 0;
 	while (i < table->nb_philos)
@@ -184,7 +184,7 @@ static bool	ft_end_condition_reached(t_table *table, t_philo *philo)
 		return (true);
 	}
 	if (table->must_eat_count != -1 && philo->ate_enough == false
-		&& philo->times_ate >= (unsigned int)table->must_eat_count)
+		&& philo->times_ate >= table->must_eat_count)
 	{
 		sem_post(philo->sem_philo_full);
 		philo->ate_enough = true;
@@ -295,15 +295,16 @@ int	ft_error_failure(char *str, char *details, t_table *table)
 {
 	if (table != NULL)
 		ft_free_table2(table);
-	return (ft_msg(str, details, 0));
+	ft_error_msg(str, details, NULL, NULL);
+	return (0);
 }
 
 //todo - exit 
 void	*ft_error_null(char *str, char *details, t_table *table)
 {
 	if (table != NULL)
-		ft_free_table(table);
-	ft_msg(str, details, EXIT_FAILURE);
+		ft_free_table2(table);
+	ft_error_msg(str, details, NULL, NULL);
 	return (NULL);
 }
 
@@ -313,20 +314,20 @@ void	ft_child_exit(t_table *table, int exit_code)
 	sem_post(table->this_philo->sem_meal);
 	pthread_join(table->this_philo->ft_personal_grim_reaper, NULL);
 	if (exit_code == ft_child_exit_ERR_SEM)
-		ft_msg(STR_ERR_SEM, NULL, 0);
+		ft_error_msg(STR_ERR_SEM, NULL, NULL, NULL);
 	if (exit_code == ft_child_exit_ERR_PTHREAD)
-		ft_msg(STR_ERR_THREAD, NULL, 0);
+		ft_error_msg(STR_ERR_THREAD, NULL, NULL, NULL);
 	sem_close(table->this_philo->sem_forks);
 	sem_close(table->this_philo->sem_philo_full);
 	sem_close(table->this_philo->sem_philo_dead);
 	sem_close(table->this_philo->sem_write);
 	sem_close(table->this_philo->sem_meal);
-	ft_free_table(table);
+	ft_free_table2(table);
 	exit(exit_code);
 }
 
 //done - utils
-int	ft_strlen(char *str)
+int	ft_strlen(const char *str)
 {
 	int	i;
 
@@ -341,7 +342,7 @@ int	ft_strlen(char *str)
 }
 
 //done new
-int	ft_putstrerror(char *str)
+static int	ft_putstrerror(char *str)
 {
 	int	i;
 
@@ -458,6 +459,7 @@ static char	*ft_set_local_sem_name(const char *str, int id)
 	tmp = ft_utoa(id, digit_count);
 	sem_name = ft_strcat(sem_name, tmp);
 	free(tmp);
+
 	return (sem_name);
 }
 
@@ -466,8 +468,8 @@ static int	ft_set_philo_sem_names(t_philo *philo)
 {
 	philo->sem_meal_name = ft_set_local_sem_name(SEM_NAME_MEAL, philo->id + 1);
 	if (philo->sem_meal_name == NULL)
-		return (1);
-	return (0);
+		return (0);
+	return (1);
 }
 
 //todo - init
@@ -478,20 +480,20 @@ static t_philo	**ft_init_philosophers(t_table *table)
 
 	philos = malloc(sizeof(t_philo) * (table->nb_philos + 1));
 	if (!philos)
-		return (ft_error_null(STR_ERR_MALLOC, NULL, 0));
+		return (ft_error_null(STR_ERR_MALLOC, "PHILOS\n", 0));
 	i = 0;
 	while (i < table->nb_philos)
 	{
 		philos[i] = malloc(sizeof(t_philo) * 1);
 		if (!philos[i])
-			return (ft_error_null(STR_ERR_MALLOC, NULL, 0));
+			return (ft_error_null(STR_ERR_MALLOC, "PHILOS[i]\n", 0));
 		philos[i]->table = table;
 		philos[i]->id = i;
 		philos[i]->red = ((i / 4) + 12 * i) % 64 + 192;
 		philos[i]->green = (32 + (i / 4) + 34 * i) % 64 + 192;
 		philos[i]->blue = ((i / 4) + i * 16) % 64 + 192;
 		if (!ft_set_philo_sem_names(philos[i]))
-			return (ft_error_null(STR_ERR_MALLOC, NULL, table));
+			return (ft_error_null(STR_ERR_MALLOC, "SEM NAMES\n", table));
 		philos[i]->times_ate = 0;
 		philos[i]->nb_forks_held = 0;
 		philos[i]->ate_enough = 0;
@@ -535,7 +537,7 @@ t_table	*ft_init_table(int argc, char *argv[])
 
 	table = malloc(sizeof(t_table) * 1);
 	if (!table)
-		return (ft_error_msg(STR_ERR_MALLOC, NULL, NULL, NULL), NULL);
+		return (ft_error_msg(STR_ERR_MALLOC, "TABLE\n", NULL, NULL), NULL);
 	table->nb_philos = ft_mini_atoi(argv[1]);
 	table->time_to_die = ft_mini_atoi(argv[2]);
 	table->time_to_eat = ft_mini_atoi(argv[3]);
@@ -544,7 +546,7 @@ t_table	*ft_init_table(int argc, char *argv[])
 	table->philo_full_count = 0;
 	table->stop_sim = 0;
 	if (argc == 6)
-		table->must_eat_count = ft_integer_atoi(argv[5]);
+		table->must_eat_count = ft_mini_atoi(argv[5]);
 	if (!ft_init_global_semaphores(table))
 		return (NULL);
 	table->philos = ft_init_philosophers(table);
@@ -552,7 +554,7 @@ t_table	*ft_init_table(int argc, char *argv[])
 		return (NULL);
 	table->pids = malloc(sizeof * table->pids * table->nb_philos);
 	if (!table->pids)
-		return (ft_error_msg(STR_ERR_MALLOC, NULL, NULL, NULL), NULL);
+		return (ft_error_msg(STR_ERR_MALLOC, "PIDS\n", NULL, NULL), NULL);
 	return (table);
 }
 

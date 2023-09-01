@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:36 by okraus            #+#    #+#             */
-/*   Updated: 2023/09/01 12:29:30 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 15:38:41 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ int	main(int argc, char *argv[])
 		return (1);
 	table = ft_init_table(argc, argv);
 	if (!table)
+		return (1);
+	if (!ft_start_simulation(table))
 		return (1);
 	if (ft_stop_simulation(table) == -1)
 		return (ft_free_table(table, EXIT_FAILURE));
