@@ -6,12 +6,13 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:29 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/27 14:10:38 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 12:35:07 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
 
+//done
 int	ft_kill_all_philos(t_table *table, int exit_code)
 {
 	unsigned int	i;
@@ -25,6 +26,7 @@ int	ft_kill_all_philos(t_table *table, int exit_code)
 	return (exit_code);
 }
 
+//done
 void	*ft_global_gluttony_reaper(void *data)
 {
 	t_table	*table;
@@ -52,6 +54,7 @@ void	*ft_global_gluttony_reaper(void *data)
 	return (NULL);
 }
 
+//done
 void	*ft_global_famine_reaper(void *data)
 {
 	t_table	*table;
@@ -73,6 +76,7 @@ void	*ft_global_famine_reaper(void *data)
 	return (NULL);
 }
 
+//done
 static bool	ft_end_condition_reached(t_table *table, t_philo *philo)
 {
 	sem_wait(philo->sem_meal);
@@ -93,6 +97,8 @@ static bool	ft_end_condition_reached(t_table *table, t_philo *philo)
 	return (false);
 }
 
+
+//done
 void	*ft_personal_grim_reaper(void *data)
 {
 	t_table			*table;

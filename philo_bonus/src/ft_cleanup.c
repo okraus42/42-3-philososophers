@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:42:16 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/31 15:36:04 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 12:29:09 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	*ft_free_table(t_table *table)
 	return (NULL);
 }
 
+//done
 int	ft_sem_error_cleanup(t_table *table)
 {
 	sem_close(table->sem_forks);

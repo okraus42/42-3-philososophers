@@ -6,12 +6,13 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:44:19 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/31 15:36:31 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 12:31:58 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
 
+//done
 static char	*ft_set_local_sem_name(const char *str, unsigned int id)
 {
 	unsigned int	i;
@@ -38,6 +39,7 @@ static char	*ft_set_local_sem_name(const char *str, unsigned int id)
 	return (sem_name);
 }
 
+//done
 static bool	ft_set_philo_sem_names(t_philo *philo)
 {
 	philo->sem_meal_name = ft_set_local_sem_name(SEM_NAME_MEAL, philo->id + 1);
@@ -46,6 +48,7 @@ static bool	ft_set_philo_sem_names(t_philo *philo)
 	return (true);
 }
 
+//done
 static t_philo	**ft_init_philosophers(t_table *table)
 {
 	t_philo			**philos;
@@ -76,6 +79,7 @@ static t_philo	**ft_init_philosophers(t_table *table)
 	return (philos);
 }
 
+//done
 static bool	ft_init_global_semaphores(t_table *table)
 {
 	ft_unlink_global_sems();

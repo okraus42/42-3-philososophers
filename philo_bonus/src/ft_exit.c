@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:44:24 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/31 15:37:51 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 12:31:13 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	ft_msg(char *str, char *detail, int exit_no)
 	return (exit_no);
 }
 
+//done
 int	ft_error_failure(char *str, char *details, t_table *table)
 {
 	if (table != NULL)
@@ -29,6 +30,7 @@ int	ft_error_failure(char *str, char *details, t_table *table)
 	return (ft_msg(str, details, 0));
 }
 
+//done
 void	*ft_error_null(char *str, char *details, t_table *table)
 {
 	if (table != NULL)
@@ -37,6 +39,7 @@ void	*ft_error_null(char *str, char *details, t_table *table)
 	return (NULL);
 }
 
+//done
 void	ft_child_exit(t_table *table, int exit_code)
 {
 	sem_post(table->this_philo->sem_meal);

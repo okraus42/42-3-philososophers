@@ -6,12 +6,13 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:47 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/27 14:11:53 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 12:29:05 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
 
+//done
 void	ft_grab_fork(t_philo *philo)
 {
 	sem_wait(philo->sem_forks);
@@ -24,6 +25,7 @@ void	ft_grab_fork(t_philo *philo)
 	sem_post(philo->sem_meal);
 }
 
+//done
 void	ft_lone_philo_routine(t_philo *philo)
 {
 	philo->sem_philo_full = sem_open(SEM_NAME_FULL, O_CREAT,

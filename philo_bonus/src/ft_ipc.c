@@ -6,12 +6,13 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:44:01 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/27 14:20:19 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 12:33:34 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
 
+//done
 static bool	ft_philo_open_global_semaphores(t_philo *philo)
 {
 	philo->sem_forks = sem_open(SEM_NAME_FORKS, O_CREAT,
@@ -33,6 +34,7 @@ static bool	ft_philo_open_global_semaphores(t_philo *philo)
 	return (true);
 }
 
+//done
 static bool	ft_philo_open_local_semaphores(t_philo *philo)
 {
 	philo->sem_meal = sem_open(philo->sem_meal_name, O_CREAT,
@@ -43,6 +45,7 @@ static bool	ft_philo_open_local_semaphores(t_philo *philo)
 	return (true);
 }
 
+//done
 void	ft_init_philo_ipc(t_table *table, t_philo *philo)
 {
 	if (table->nb_philos == 1)

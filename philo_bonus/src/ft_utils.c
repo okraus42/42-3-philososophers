@@ -6,12 +6,13 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:06 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/27 14:09:09 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 12:36:33 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
 
+//done
 size_t	ft_strlen(const char *str)
 {
 	size_t	i;
@@ -22,6 +23,7 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
+//done
 char	*ft_strcat(char	*dst, const char *src)
 {
 	size_t	i;
@@ -40,6 +42,7 @@ char	*ft_strcat(char	*dst, const char *src)
 	return (dst);
 }
 
+//done
 char	*ft_utoa(unsigned int nb, size_t len)
 {
 	char	*ret;
@@ -57,6 +60,7 @@ char	*ft_utoa(unsigned int nb, size_t len)
 	return (ret);
 }
 
+//done
 void	ft_unlink_global_sems(void)
 {
 	sem_unlink(SEM_NAME_FORKS);
@@ -66,6 +70,7 @@ void	ft_unlink_global_sems(void)
 	sem_unlink(SEM_NAME_STOP);
 }
 
+//done
 bool	ft_start_grim_reaper_threads(t_table *table)
 {
 	if (pthread_create(&table->gluttony_reaper, NULL,

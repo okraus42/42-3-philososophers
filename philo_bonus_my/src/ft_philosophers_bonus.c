@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:36 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/31 15:35:23 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 12:29:30 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,32 @@ static int	ft_start_simulation(t_table *table)
 	}
 	if (ft_start_grim_reaper_threads(table) == false)
 		return (1);
+	return (0);
+}
+
+//todo
+static int	ft_get_child_philo(t_table *table, pid_t *pid)
+{
+	int	philo_exit_code;
+	int	exit_code;
+
+	if (*pid && waitpid(*pid, &philo_exit_code, WNOHANG) != 0)
+	{
+		if (WIFEXITED(philo_exit_code))
+		{
+			exit_code = WEXITSTATUS(philo_exit_code);
+			if (exit_code == ft_child_exit_PHILO_DEAD)
+				return (ft_kill_all_philos(table, 1));
+			if (exit_code == ft_child_exit_ERR_PTHREAD
+				|| exit_code == ft_child_exit_ERR_SEM)
+				return (ft_kill_all_philos(table, -1));
+			if (exit_code == ft_child_exit_PHILO_FULL)
+			{
+				table->philo_full_count += 1;
+				return (1);
+			}
+		}
+	}
 	return (0);
 }
 

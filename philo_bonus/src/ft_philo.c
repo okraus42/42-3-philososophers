@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:40 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/31 15:39:42 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 12:29:11 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static void	ft_think_routine_even(t_philo *philo)
 	philo_sleep(time_to_think);
 }
 
+//done
 static void	ft_think_routine_odd(t_philo *philo)
 {
 	time_t	time_to_think;
@@ -59,6 +60,7 @@ static void	ft_think_routine_odd(t_philo *philo)
 	philo_sleep(time_to_think);
 }
 
+//done
 static void	ft_philosopher_routine(t_philo *philo)
 {
 	if (!(philo->id & 1))

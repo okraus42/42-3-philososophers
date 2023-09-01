@@ -6,12 +6,13 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:35:45 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/03 12:30:45 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 12:42:00 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers.h"
 
+//todo - main
 static bool	ft_start_simulation(t_table *table)
 {
 	int	i;
@@ -34,6 +35,7 @@ static bool	ft_start_simulation(t_table *table)
 	return (0);
 }
 
+//todo - main
 static void	ft_stop_simulation(t_table	*table)
 {
 	int	i;
@@ -52,6 +54,7 @@ static void	ft_stop_simulation(t_table	*table)
 	ft_free_table(table);
 }
 
+//todo - main
 int	main(int argc, char *argv[])
 {
 	t_table	*table;
