@@ -5,13 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/23 13:44:59 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/03 13:00:02 by okraus           ###   ########.fr       */
+/*   Created: 2023/09/01 12:37:33 by okraus            #+#    #+#             */
+/*   Updated: 2023/09/01 12:39:37 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers.h"
 
+//todo - philo
 static void	ft_philo_sleep(t_table *table, time_t sleep_time)
 {
 	time_t	wake_up;
@@ -26,6 +27,7 @@ static void	ft_philo_sleep(t_table *table, time_t sleep_time)
 	}
 }
 
+//todo - philo
 static void	ft_eat_sleep_routine(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->fork_locks[philo->fork[0]]);
@@ -49,6 +51,7 @@ static void	ft_eat_sleep_routine(t_philo *philo)
 	ft_philo_sleep(philo->table, philo->table->time_to_sleep);
 }
 
+//todo - philo
 static void	ft_think_routine(t_philo *philo)
 {
 	time_t	time_to_think;
@@ -65,6 +68,7 @@ static void	ft_think_routine(t_philo *philo)
 	ft_philo_sleep(philo->table, time_to_think);
 }
 
+//todo - philo
 static void	ft_think_routine_odd(t_philo *philo)
 {
 	time_t	time_to_think;
@@ -82,6 +86,7 @@ static void	ft_think_routine_odd(t_philo *philo)
 	ft_philo_sleep(philo->table, time_to_think);
 }
 
+//todo - philo
 static void	*ft_lone_philo_routine(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->fork_locks[philo->fork[0]]);
@@ -92,6 +97,7 @@ static void	*ft_lone_philo_routine(t_philo *philo)
 	return (NULL);
 }
 
+//todo - philo
 void	*ft_philo(void *data)
 {
 	t_philo	*philo;

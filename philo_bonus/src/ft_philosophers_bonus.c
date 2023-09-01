@@ -6,28 +6,18 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:36 by okraus            #+#    #+#             */
-/*   Updated: 2023/08/31 15:35:40 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/01 16:42:16 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
-//done
 
-bool	ft_has_simulation_stopped(t_table *table)
+
+//todo
+static int	ft_start_simulation(t_table *table)
 {
-	bool	ret;
-
-	sem_wait(table->sem_stop);
-	ret = table->stop_sim;
-	sem_post(table->sem_stop);
-	return (ret);
-}
-//done
-
-static bool	ft_start_simulation(t_table *table)
-{
-	unsigned int	i;
-	pid_t			pid;
+	int		i;
+	pid_t	pid;
 
 	table->start_time = ft_get_time_in_ms() + ((table->nb_philos * 2) * 10);
 	i = -1;
@@ -45,11 +35,11 @@ static bool	ft_start_simulation(t_table *table)
 		}
 	}
 	if (ft_start_grim_reaper_threads(table) == false)
-		return (false);
-	return (true);
+		return (0);
+	return (1);
 }
-//done
 
+//todo
 static int	ft_get_child_philo(t_table *table, pid_t *pid)
 {
 	int	philo_exit_code;
@@ -74,12 +64,12 @@ static int	ft_get_child_philo(t_table *table, pid_t *pid)
 	}
 	return (0);
 }
-//done
 
+//todo
 static int	ft_stop_simulation(t_table	*table)
 {
-	unsigned int	i;
-	int				exit_code;
+	int	i;
+	int	exit_code;
 
 	ft_sim_start_delay(table->start_time);
 	while (ft_has_simulation_stopped(table) == false)
@@ -102,23 +92,23 @@ static int	ft_stop_simulation(t_table	*table)
 	}
 	return (0);
 }
-//done
 
-int	main(int ac, char **av)
+int	main(int argc, char *argv[])
 {
 	t_table	*table;
 
 	table = NULL;
-	if (ac - 1 < 4 || ac - 1 > 5)
-		return (ft_msg(STR_USAGE, NULL, EXIT_FAILURE));
-	if (!ft_is_valid_input(ac, av))
-		return (EXIT_FAILURE);
-	table = ft_init_table(ac, av);
+	if (argc < 5 || argc > 6)
+		return (ft_error_msg(STR_USAGE, NULL, NULL, NULL));
+	if (!ft_is_valid_input(argc, argv))
+		return (1);
+	table = ft_init_table(argc, argv);
 	if (!table)
-		return (EXIT_FAILURE);
+		return (1);
 	if (!ft_start_simulation(table))
-		return (EXIT_FAILURE);
+		return (1);
 	if (ft_stop_simulation(table) == -1)
-		return (ft_table_cleanup(table, EXIT_FAILURE));
-	return (ft_table_cleanup(table, EXIT_SUCCESS));
+		return (ft_free_table(table, EXIT_FAILURE));
+	return (ft_free_table(table, EXIT_SUCCESS));
+	return (0);
 }

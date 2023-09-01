@@ -5,13 +5,48 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/04 09:43:40 by okraus            #+#    #+#             */
-/*   Updated: 2023/09/01 12:29:11 by okraus           ###   ########.fr       */
+/*   Created: 2023/08/31 15:39:22 by okraus            #+#    #+#             */
+/*   Updated: 2023/09/01 15:24:51 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
 
+//todo - philo-utils
+static void	ft_grab_fork(t_philo *philo)
+{
+	sem_wait(philo->sem_forks);
+	sem_wait(philo->sem_meal);
+	if (philo->nb_forks_held <= 0)
+		ft_write_status(philo, false, GOT_FORK_1);
+	if (philo->nb_forks_held == 1)
+		ft_write_status(philo, false, GOT_FORK_2);
+	philo->nb_forks_held += 1;
+	sem_post(philo->sem_meal);
+}
+
+//todo - philo-utils
+static void	ft_lone_philo_routine(t_philo *philo)
+{
+	philo->sem_philo_full = sem_open(SEM_NAME_FULL, O_CREAT,
+			S_IRUSR | S_IWUSR, philo->table->nb_philos);
+	if (philo->sem_philo_full == SEM_FAILED)
+		exit(ft_child_exit_ERR_SEM);
+	sem_wait(philo->sem_philo_full);
+	ft_sim_start_delay(philo->table->start_time);
+	if (philo->table->must_eat_count == 0)
+	{
+		sem_post(philo->sem_philo_full);
+		exit(ft_child_exit_PHILO_FULL);
+	}
+	ft_print_status(philo, "has taken a fork");
+	philo_sleep(philo->table->time_to_die);
+	ft_print_status(philo, "died");
+	ft_free_table2(philo->table);
+	exit(ft_child_exit_PHILO_DEAD);
+}
+
+//todo - philo
 static void	ft_eat_sleep_routine(t_philo *philo)
 {
 	ft_grab_fork(philo);
@@ -31,6 +66,7 @@ static void	ft_eat_sleep_routine(t_philo *philo)
 	philo_sleep(philo->table->time_to_sleep);
 }
 
+//todo - philo
 static void	ft_think_routine_even(t_philo *philo)
 {
 	time_t	time_to_think;
@@ -45,7 +81,7 @@ static void	ft_think_routine_even(t_philo *philo)
 	philo_sleep(time_to_think);
 }
 
-//done
+//todo - philo
 static void	ft_think_routine_odd(t_philo *philo)
 {
 	time_t	time_to_think;
@@ -60,7 +96,7 @@ static void	ft_think_routine_odd(t_philo *philo)
 	philo_sleep(time_to_think);
 }
 
-//done
+//todo - philo
 static void	ft_philosopher_routine(t_philo *philo)
 {
 	if (!(philo->id & 1))
@@ -83,7 +119,7 @@ static void	ft_philosopher_routine(t_philo *philo)
 	}
 }
 
-//done
+//todo - philo
 void	ft_philosopher(t_table *table)
 {
 	t_philo	*philo;
