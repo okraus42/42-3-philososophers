@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:35:45 by okraus            #+#    #+#             */
-/*   Updated: 2023/09/02 15:31:41 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/02 19:24:27 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	ft_start_simulation(t_table *table)
 {
 	int	i;
 
-	table->start_time = ft_get_time_in_ms() + (table->nb_philos * 64);
+	table->start_time = ft_get_time_in_ms() + (table->nb_philos * 4);
 	i = 0;
 	while (i < table->nb_philos)
 	{
