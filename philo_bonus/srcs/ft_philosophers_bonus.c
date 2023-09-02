@@ -6,14 +6,12 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:43:36 by okraus            #+#    #+#             */
-/*   Updated: 2023/09/01 16:42:16 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/02 18:31:14 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_philosophers_bonus.h"
 
-
-//todo
 static int	ft_start_simulation(t_table *table)
 {
 	int		i;
@@ -34,12 +32,11 @@ static int	ft_start_simulation(t_table *table)
 			ft_philosopher(table);
 		}
 	}
-	if (ft_start_grim_reaper_threads(table) == false)
+	if (ft_start_grim_reaper_threads(table) == 0)
 		return (0);
 	return (1);
 }
 
-//todo
 static int	ft_get_child_philo(t_table *table, pid_t *pid)
 {
 	int	philo_exit_code;
@@ -50,12 +47,12 @@ static int	ft_get_child_philo(t_table *table, pid_t *pid)
 		if (WIFEXITED(philo_exit_code))
 		{
 			exit_code = WEXITSTATUS(philo_exit_code);
-			if (exit_code == ft_child_exit_PHILO_DEAD)
+			if (exit_code == FT_CHILD_EXIT_PHILO_DEAD)
 				return (ft_kill_all_philos(table, 1));
-			if (exit_code == ft_child_exit_ERR_PTHREAD
-				|| exit_code == ft_child_exit_ERR_SEM)
+			if (exit_code == FT_CHILD_EXIT_ERR_PTHREAD
+				|| exit_code == FT_CHILD_EXIT_ERR_SEM)
 				return (ft_kill_all_philos(table, -1));
-			if (exit_code == ft_child_exit_PHILO_FULL)
+			if (exit_code == FT_CHILD_EXIT_PHILO_FULL)
 			{
 				table->philo_full_count += 1;
 				return (1);
@@ -65,14 +62,13 @@ static int	ft_get_child_philo(t_table *table, pid_t *pid)
 	return (0);
 }
 
-//todo
 static int	ft_stop_simulation(t_table	*table)
 {
 	int	i;
 	int	exit_code;
 
 	ft_sim_start_delay(table->start_time);
-	while (ft_has_simulation_stopped(table) == false)
+	while (ft_has_simulation_stopped(table) == 0)
 	{
 		i = 0;
 		while (i < table->nb_philos)
@@ -81,7 +77,7 @@ static int	ft_stop_simulation(t_table	*table)
 			if (exit_code == 1 || exit_code == -1)
 			{
 				sem_wait(table->sem_stop);
-				table->stop_sim = true;
+				table->stop_sim = 1;
 				sem_post(table->sem_philo_full);
 				sem_post(table->sem_philo_dead);
 				sem_post(table->sem_stop);

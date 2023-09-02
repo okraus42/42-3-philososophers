@@ -6,26 +6,31 @@
 #    By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/22 15:33:07 by okraus            #+#    #+#              #
-#    Updated: 2023/09/01 18:01:02 by okraus           ###   ########.fr        #
+#    Updated: 2023/09/02 15:40:09 by okraus           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		= cc
-CFLAGS	= -Werror -Wall -Wextra -pthread -g
-NAME	= philo
+CC			= cc
+CFLAGS		= -Werror -Wall -Wextra -pthread -g
+NAME		= philo
 
-SRC_PATH = srcs/
-OBJ_PATH = objects/
+SRC_PATH 	= srcs/
+OBJ_PATH 	= objects/
 
-SRC		=	ft_philosophers.c \
-			ft_other_functions.c \
-			ft_philo.c
+SRC			=	ft_philosophers.c \
+				ft_philo.c \
+				ft_philo2.c \
+				ft_init.c \
+				ft_init2.c \
+				ft_utils.c \
+				ft_utils2.c \
+				ft_reaper.c
 
-SRCS	= $(addprefix $(SRC_PATH), $(SRC))
-OBJ		= $(SRC:.c=.o)
-OBJS	= $(addprefix $(OBJ_PATH), $(OBJ))
+SRCS		= $(addprefix $(SRC_PATH), $(SRC))
+OBJ			= $(SRC:.c=.o)
+OBJS		= $(addprefix $(OBJ_PATH), $(OBJ))
 
-INC		= -I ./includes/
+INC			= -I ./includes/
 
 all: $(NAME)
 

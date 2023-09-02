@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 09:44:34 by okraus            #+#    #+#             */
-/*   Updated: 2023/09/01 18:06:03 by okraus           ###   ########.fr       */
+/*   Updated: 2023/09/02 18:31:14 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
-# include <stdbool.h>
 # include <semaphore.h>
 # include <signal.h>
 # include <fcntl.h>
@@ -33,25 +32,12 @@
 # define MAX_PHILOS	250
 # define STR_MAX_PHILOS "250"
 
-# define NC		"\e[0m"
-// # define RED	"\e[31m"
-// # define GREEN	"\e[32m"
-// # define PURPLE	"\e[35m"
-// # define CYAN	"\e[36m"
-
-//# define STR_PROG_NAME	"philo_bonus:"
 # define STR_USAGE				"philo: usage: ./philo_bonus \
 <number_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> \
 [number_of_times_each_philosopher_must_eat]\n\
-<number_of_philosophers>: 1-250\n<time_to_die>:            1-99999\n\
-<time_to_eat>:            1-99999\n<time_to_sleep>:          1-99999\n\
-[number_of_times_each_philosopher_must_eat]: 1-99999\n"
-# define STR_ERR_INPUT_DIGIT1	"philo_bonus: invalid input: <"
-# define STR_ERR_INPUT_DIGIT2 ">: not a valid unsigned integer between \
-0 and 99999.\n"
-# define STR_ERR_INPUT_POFLOW1	"philo_bonus: invalid input: \
-there must be between 1 and "
-# define STR_ERR_INPUT_POFLOW2	" philosophers.\n"
+<number_of_philosophers>: 1-250\n<time_to_die>:            0-99999\n\
+<time_to_eat>:            0-99999\n<time_to_sleep>:          0-99999\n\
+[number_of_times_each_philosopher_must_eat]: 0-99999\n"
 # define STR_ERR_THREAD	"philo_bonus: error: Could not create thread.\n"
 # define STR_ERR_MALLOC	"philo_bonus: error: Could not allocate memory.\n"
 # define STR_ERR_SEM	"philo_bonus: error: Could not create semaphore.\n"
@@ -64,10 +50,10 @@ there must be between 1 and "
 # define SEM_NAME_STOP	"/philo_global_stop"
 # define SEM_NAME_MEAL	"/philo_local_meal_"
 
-# define ft_child_exit_ERR_PTHREAD	40
-# define ft_child_exit_ERR_SEM		41
-# define ft_child_exit_PHILO_FULL	42
-# define ft_child_exit_PHILO_DEAD	43
+# define FT_CHILD_EXIT_ERR_PTHREAD	40
+# define FT_CHILD_EXIT_ERR_SEM		41
+# define FT_CHILD_EXIT_PHILO_FULL	42
+# define FT_CHILD_EXIT_PHILO_DEAD	43
 
 /******************************************************************************
 *                                 Structures                                  *
@@ -133,71 +119,56 @@ typedef enum e_status
 
 //	main.c
 
-// others.c
-int		ft_is_valid_input(int argc, char *argv[]);
-int		ft_mini_atoi(char *str);
-int		ft_contains_only_digits(char *str);
-int		ft_error_msg(char *str, char *detail1, char *detail2, char *detail3);
-int		ft_strlen(const char *str);
-t_table	*ft_init_table(int argc, char *argv[]);
-int		ft_free_table(t_table *table, int exit_code);
-void	*ft_free_table2(t_table *table);
-int		ft_has_simulation_stopped(t_table *table);
-char	*ft_strcat(char	*dst, const char *src);
-char	*ft_utoa(unsigned int nb, size_t len);
-void	ft_unlink_global_sems(void);
-bool	ft_start_grim_reaper_threads(t_table *table);
-
+//	ft_utils.c
 time_t	ft_get_time_in_ms(void);
 void	philo_sleep(time_t sleep_time);
 void	ft_sim_start_delay(time_t start_time);
-int	ft_kill_all_philos(t_table *table, int exit_code);
+char	*ft_strcat(char	*dst, const char *src);
+char	*ft_mini_itoa(int nb, size_t len);
 
-void	*ft_global_gluttony_reaper(void *data);
+//	ft_utils2.c
+void	ft_unlink_global_sems(void);
+int		ft_has_simulation_stopped(t_table *table);
+int		ft_strlen(const char *str);
+int		ft_mini_atoi(char *str);
+int		ft_error_msg(char *str, char *detail1, char *detail2, char *detail3);
 
-
-void	*ft_global_famine_reaper(void *data);
-
-
-void	*ft_personal_grim_reaper(void *data);
-
+//	ft_utils3.c
+int		ft_putstrerror(char *str);
+int		ft_is_valid_input(int argc, char *argv[]);
+int		ft_contains_only_digits(char *str);
 void	ft_print_status(t_philo *philo, char *str);
-
-
-
-void	ft_write_status(t_philo *philo, bool reaper_report, t_status status);
-
-void	ft_init_philo_ipc(t_table *table, t_philo *philo);
-
-int	ft_error_failure(char *str, char *details, t_table *table);
-
-void	*ft_error_null(char *str, char *details, t_table *table);
-
-void	ft_child_exit(t_table *table, int exit_code);
-
-
-void	*ft_free_table2(t_table *table);
-
-int	ft_free_table(t_table *table, int exit_code);
-int	ft_has_simulation_stopped(t_table *table);
-int	ft_sem_error_cleanup(t_table *table);
-
-
-
-
-
-
-
-
-
-
-
-
+void	ft_write_status(t_philo *philo, int reaper_report, t_status status);
 
 //	ft_philo.c
 void	ft_philosopher(t_table *table);
 
+//	ft_philo2.c
+void	ft_lone_philo_routine(t_philo *philo);
+void	ft_grab_fork(t_philo *philo);
 
+//	ft_init.c
+t_table	*ft_init_table(int argc, char *argv[]);
 
+//	ft_init2.c
+void	ft_init_philo_semaphores(t_table *table, t_philo *philo);
+void	ft_init_philosophers2(t_philo *philo, int i);
+
+//	ft_reapers.c
+int		ft_start_grim_reaper_threads(t_table *table);
+void	*ft_global_gluttony_reaper(void *data);
+void	*ft_global_famine_reaper(void *data);
+void	*ft_personal_grim_reaper(void *data);
+
+//	ft_exit.c
+int		ft_kill_all_philos(t_table *table, int exit_code);
+int		ft_free_table(t_table *table, int exit_code);
+void	*ft_free_table2(t_table *table);
+int		ft_sem_error_cleanup(t_table *table);
+void	ft_child_exit(t_table *table, int exit_code);
+
+//	ft_exit2.c
+int		ft_error_failure(char *str, char *details, t_table *table);
+void	*ft_error_null(char *str, char *details, t_table *table);
 
 #endif
